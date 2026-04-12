@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌙 بلاد الحكايات · Le Pays des Contes</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700;800&family=Amiri:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07091a; --card:#111630; --gold:#ffd166; --rose:#ff6b9d;
+  --cyan:#06d6a0; --purple:#a855f7; --blue:#3b82f6; --orange:#f97316;
+  --text:#e8eaf6; --muted:#8892b0; --border:rgba(255,255,255,0.08);
+  --r:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Baloo 2',cursive;overflow-x:hidden;min-height:100vh}
+
+/* STARS BG */
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(1px 1px at 10% 20%,#fff 0%,transparent 100%),
+  radial-gradient(1px 1px at 30% 50%,#fff 0%,transparent 100%),
+  radial-gradient(1px 1px at 55% 15%,#fff 0%,transparent 100%),
+  radial-gradient(1px 1px at 75% 40%,#fff 0%,transparent 100%),
+  radial-gradient(1px 1px at 90% 70%,#fff 0%,transparent 100%),
+  radial-gradient(1.5px 1.5px at 20% 80%,rgba(255,255,200,.8) 0%,transparent 100%),
+  radial-gradient(1.5px 1.5px at 65% 90%,rgba(255,255,200,.8) 0%,transparent 100%),
+  radial-gradient(1px 1px at 85% 10%,#fff 0%,transparent 100%),
+  radial-gradient(1px 1px at 45% 60%,rgba(255,255,255,.6) 0%,transparent 100%),
+  radial-gradient(1px 1px at 5% 45%,rgba(255,255,255,.5) 0%,transparent 100%);
+  pointer-events:none;z-index:0;animation:starPulse 4s ease-in-out infinite alternate}
+@keyframes starPulse{from{opacity:.6}to{opacity:1}}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);background:rgba(7,9,26,.85);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.logo{font-family:'Fredoka One',cursive;font-size:1.5rem;background:linear-gradient(135deg,var(--gold),var(--rose));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap}
+.lang-pills{display:flex;gap:6px;flex-wrap:wrap}
+.lpill{padding:5px 14px;border-radius:50px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-family:'Baloo 2',cursive;font-size:.82rem;cursor:pointer;transition:.2s}
+.lpill.on{background:var(--gold);border-color:var(--gold);color:#07091a;font-weight:700}
+
+/* HERO */
+.hero{position:relative;z-index:1;text-align:center;padding:60px 20px 40px}
+.hero-moon{font-size:72px;display:inline-block;animation:moonFloat 5s ease-in-out infinite;filter:drop-shadow(0 0 40px rgba(255,209,102,.5))}
+@keyframes moonFloat{0%,100%{transform:translateY(0)rotate(-8deg)}50%{transform:translateY(-18px)rotate(8deg)}}
+.hero h1{font-family:'Fredoka One',cursive;font-size:clamp(2.2rem,6vw,4.2rem);line-height:1.1;margin-top:12px;background:linear-gradient(135deg,var(--gold) 0%,var(--rose) 50%,var(--purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{color:var(--muted);font-size:1.05rem;margin-top:10px}
+.hero-stats{display:flex;justify-content:center;gap:30px;margin-top:24px;flex-wrap:wrap}
+.stat{text-align:center}.stat b{font-size:1.6rem;display:block;background:linear-gradient(135deg,var(--cyan),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.stat span{font-size:.8rem;color:var(--muted)}
+
+/* SEARCH + FILTERS */
+.controls{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 20px 30px}
+.search-box{position:relative;margin-bottom:16px}
+.search-box input{width:100%;padding:14px 20px 14px 50px;border-radius:50px;border:2px solid var(--border);background:rgba(255,255,255,.05);color:var(--text);font-size:1rem;font-family:'Baloo 2',cursive;outline:none;transition:.3s;backdrop-filter:blur(10px)}
+.search-box input:focus{border-color:var(--gold);background:rgba(255,255,255,.08)}
+.search-box input::placeholder{color:var(--muted)}
+.search-box .si{position:absolute;left:18px;top:50%;transform:translateY(-50%);font-size:18px}
+.cat-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.cat-btn{padding:7px 18px;border-radius:50px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-family:'Baloo 2',cursive;font-size:.85rem;cursor:pointer;transition:.25s}
+.cat-btn:hover,.cat-btn.on{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.cat-btn[data-c="all"].on{background:var(--gold);border-color:var(--gold);color:#07091a}
+.cat-btn[data-c="magic"].on{background:var(--purple);border-color:var(--purple);color:#fff}
+.cat-btn[data-c="animals"].on{background:var(--cyan);border-color:var(--cyan);color:#07091a}
+.cat-btn[data-c="adventure"].on{background:var(--orange);border-color:var(--orange);color:#fff}
+.cat-btn[data-c="fairy"].on{background:var(--rose);border-color:var(--rose);color:#fff}
+.cat-btn[data-c="moral"].on{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* GRID */
+.grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px;max-width:1200px;margin:0 auto 60px;padding:0 20px}
+
+/* CARD */
+.card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:.3s;animation:cardIn .5s ease both}
+.card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.5);border-color:rgba(255,255,255,.2)}
+@keyframes cardIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARTOON CANVAS AREA */
+.cartoon{width:100%;height:200px;position:relative;overflow:hidden;background:#000}
+canvas.scene{width:100%;height:100%;display:block}
+
+.card-info{padding:16px}
+.card-badges{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+.badge{font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:50px;letter-spacing:.8px;text-transform:uppercase}
+.b-magic{background:rgba(168,85,247,.2);color:#d8b4fe}
+.b-animals{background:rgba(6,214,160,.2);color:#6ee7b7}
+.b-adventure{background:rgba(249,115,22,.2);color:#fdba74}
+.b-fairy{background:rgba(255,107,157,.2);color:#fda4c4}
+.b-moral{background:rgba(59,130,246,.2);color:#93c5fd}
+.b-fr{background:rgba(100,149,237,.15);color:#93c5fd}
+.b-en{background:rgba(6,214,160,.15);color:#6ee7b7}
+.b-ar{background:rgba(255,209,102,.15);color:var(--gold)}
+.b-es{background:rgba(249,115,22,.15);color:#fdba74}
+
+.card-title{font-family:'Fredoka One',cursive;font-size:1.2rem;color:#fff;margin-bottom:6px;line-height:1.3}
+.card-title.ar{font-family:'Amiri',serif;font-size:1.35rem;text-align:right;direction:rtl}
+.card-desc{font-size:.84rem;color:var(--muted);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-desc.ar{font-family:'Amiri',serif;font-size:.95rem;text-align:right;direction:rtl}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.card-age{font-size:.78rem;color:var(--muted)}
+.play-btn{display:flex;align-items:center;gap:6px;padding:7px 18px;border-radius:50px;border:none;background:linear-gradient(135deg,var(--gold),var(--rose));color:#07091a;font-family:'Baloo 2',cursive;font-size:.82rem;font-weight:700;cursor:pointer;transition:.2s}
+.play-btn:hover{transform:scale(1.06);box-shadow:0 6px 20px rgba(255,107,157,.4)}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:200;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(12px)}
+.overlay.open{display:flex}
+.modal{background:linear-gradient(160deg,#0f1535,#0a0d20);border:1.5px solid rgba(255,255,255,.12);border-radius:24px;max-width:760px;width:100%;max-height:92vh;overflow-y:auto;position:relative;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);scrollbar-width:thin;scrollbar-color:var(--purple) transparent}
+@keyframes popIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.modal-canvas-wrap{width:100%;height:280px;position:relative;overflow:hidden;border-radius:24px 24px 0 0;background:#000}
+canvas#modalCanvas{width:100%;height:100%;display:block}
+.modal-controls{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:10}
+.mc-btn{padding:8px 20px;border-radius:50px;border:none;font-family:'Baloo 2',cursive;font-size:.85rem;font-weight:700;cursor:pointer;transition:.2s;backdrop-filter:blur(10px)}
+.mc-play{background:linear-gradient(135deg,var(--gold),var(--rose));color:#07091a}
+.mc-close-top{position:absolute;top:12px;right:12px;z-index:20;background:rgba(0,0,0,.5);border:none;color:#fff;font-size:18px;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;backdrop-filter:blur(6px)}
+.mc-close-top:hover{background:rgba(255,255,255,.2)}
+.modal-body{padding:28px 32px 36px}
+.modal-badges{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap}
+.modal-title{font-family:'Fredoka One',cursive;font-size:1.9rem;color:#fff;margin-bottom:8px;line-height:1.2}
+.modal-title.ar{font-family:'Amiri',serif;font-size:2.1rem;direction:rtl;text-align:right}
+.modal-story{font-size:1rem;line-height:1.9;color:rgba(232,234,246,.82)}
+.modal-story.ar{font-family:'Amiri',serif;font-size:1.18rem;direction:rtl;text-align:right}
+.modal-story p{margin-bottom:14px}
+.modal-story p:first-child::first-letter{font-family:'Fredoka One',cursive;font-size:3.2rem;float:left;line-height:.8;margin:6px 8px 0 0;background:linear-gradient(135deg,var(--gold),var(--rose));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.modal-story.ar p:first-child::first-letter{float:right;margin:6px 0 0 8px}
+
+/* EMPTY */
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);font-size:1.1rem}
+.empty span{font-size:3rem;display:block;margin-bottom:10px}
+
+/* PROGRESS BAR */
+.progress-bar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--rose));width:0%;transition:width .1s linear;z-index:5}
+
+/* FOOTER */
+footer{position:relative;z-index:1;text-align:center;padding:24px;color:var(--muted);font-size:.82rem;border-top:1px solid var(--border)}
+
+@media(max-width:600px){.modal-body{padding:20px 18px}.modal-title{font-size:1.5rem}.modal-canvas-wrap{height:200px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">🌙 بلاد الحكايات</div>
+  <div class="lang-pills">
+    <button class="lpill on" onclick="setLang('all',this)">🌍 الكل</button>
+    <button class="lpill" onclick="setLang('fr',this)">🇫🇷 FR</button>
+    <button class="lpill" onclick="setLang('en',this)">🇬🇧 EN</button>
+    <button class="lpill" onclick="setLang('ar',this)">🇸🇦 AR</button>
+    <button class="lpill" onclick="setLang('es',this)">🇪🇸 ES</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-moon">🌙</div>
+  <h1 id="heroTitle">بلاد الحكايات السحرية</h1>
+  <p id="heroSub">قصص مشوقة مع كرتون متحرك · Histoires animées · Animated Stories · Cuentos animados</p>
+  <div class="hero-stats">
+    <div class="stat"><b>20+</b><span>قصة / Stories</span></div>
+    <div class="stat"><b>4</b><span>لغات / Languages</span></div>
+    <div class="stat"><b>🎬</b><span>كرتون متحرك / Animated</span></div>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="search-box">
+    <span class="si">🔍</span>
+    <input type="text" id="search" placeholder="ابحث عن قصة… Search a story…" oninput="render()">
+  </div>
+  <div class="cat-row">
+    <button class="cat-btn on" data-c="all" onclick="setCat('all',this)">✨ الكل / All</button>
+    <button class="cat-btn" data-c="magic" onclick="setCat('magic',this)">🪄 سحر / Magic</button>
+    <button class="cat-btn" data-c="animals" onclick="setCat('animals',this)">🦊 حيوانات / Animals</button>
+    <button class="cat-btn" data-c="adventure" onclick="setCat('adventure',this)">🗺️ مغامرة / Adventure</button>
+    <button class="cat-btn" data-c="fairy" onclick="setCat('fairy',this)">🧚 جنيات / Fairies</button>
+    <button class="cat-btn" data-c="moral" onclick="setCat('moral',this)">💛 عبرة / Moral</button>
+  </div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="maybeClose(event)">
+  <div class="modal" id="modal">
+    <div class="modal-canvas-wrap">
+      <canvas id="modalCanvas"></canvas>
+      <div class="progress-bar" id="progressBar"></div>
+      <button class="mc-close-top" onclick="closeModal()">✕</button>
+      <div class="modal-controls">
+        <button class="mc-btn mc-play" id="playPauseBtn" onclick="togglePlay()">▶ تشغيل / Play</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-badges" id="modalBadges"></div>
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <div class="modal-story" id="modalStory"></div>
+    </div>
+  </div>
+</div>
+
+<footer>🌙 بلاد الحكايات · Le Pays des Contes · The Land of Tales · El País de los Cuentos</footer>
+
+<script>
+// ═══════════════════════════════════════════════
+//  CARTOON SCENES  (pure Canvas animations)
+// ═══════════════════════════════════════════════
+const scenes = {
+
+  // Scene: Night sky with floating star
+  star_night: (ctx,W,H,t)=>{
+    // Sky gradient
+    const g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#050a1a');g.addColorStop(1,'#1a0a2e');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    // Stars
+    [[.1,.15],[.3,.1],[.5,.2],[.7,.08],[.85,.18],[.2,.3],[.6,.05],[.9,.25],[.4,.35]].forEach(([x,y],i)=>{
+      const flicker=0.5+0.5*Math.sin(t*2+i*1.3);
+      ctx.fillStyle=`rgba(255,255,200,${flicker})`;
+      ctx.beginPath();ctx.arc(x*W,y*H,1.5,0,Math.PI*2);ctx.fill();
+    });
+    // Moon
+    const mx=W*.75,my=H*.25,mr=30;
+    ctx.fillStyle='#ffd166';ctx.beginPath();ctx.arc(mx,my,mr,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#f0a500';ctx.font='bold 22px serif';ctx.fillText('🌙',mx-15,my+8);
+    // Floating main star character
+    const sy=H*.5+Math.sin(t*1.5)*20,sx=W*.3;
+    // glow
+    const sg=ctx.createRadialGradient(sx,sy,0,sx,sy,35);
+    sg.addColorStop(0,'rgba(255,220,80,.8)');sg.addColorStop(1,'transparent');
+    ctx.fillStyle=sg;ctx.beginPath();ctx.arc(sx,sy,35,0,Math.PI*2);ctx.fill();
+    // star body
+    drawStar(ctx,sx,sy,5,22,10,'#ffd166','#ff9f1c');
+    // eyes
+    ctx.fillStyle='#07091a';
+    ctx.beginPath();ctx.arc(sx-6,sy-3,3,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(sx+6,sy-3,3,0,Math.PI*2);ctx.fill();
+    // smile
+    ctx.strokeStyle='#07091a';ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(sx,sy+2,7,0.2,Math.PI-.2);ctx.stroke();
+    // little girl on hill
+    drawHill(ctx,W,H);
+    drawGirl(ctx,W*.55,H*.82,t);
+    // text bubble
+    if(t%8<4){
+      drawBubble(ctx,W*.4,H*.35,'✨ أتمنى!',W*.18);
+    }
+  },
+
+  // Scene: Forest with fox
+  fox_forest: (ctx,W,H,t)=>{
+    // Sky
+    const g=ctx.createLinearGradient(0,0,0,H*.6);
+    g.addColorStop(0,'#1a2a5e');g.addColorStop(1,'#2d4a8a');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H*.6);
+    // Ground
+    const gg=ctx.createLinearGradient(0,H*.6,0,H);
+    gg.addColorStop(0,'#1a4a1a');gg.addColorStop(1,'#0d2e0d');
+    ctx.fillStyle=gg;ctx.fillRect(0,H*.6,W,H*.4);
+    // Trees
+    [[.05,.9],[.15,.8],[.8,.85],[.9,.75]].forEach(([x,yb])=>drawTree(ctx,x*W,yb*H,30+Math.random()*10));
+    // Moon
+    ctx.fillStyle='rgba(255,220,120,.9)';ctx.beginPath();ctx.arc(W*.8,H*.2,25,0,Math.PI*2);ctx.fill();
+    // Stars
+    [[.1,.1],[.3,.15],[.5,.08],[.6,.18]].forEach(([x,y],i)=>{
+      const f=0.5+0.5*Math.sin(t*3+i);ctx.fillStyle=`rgba(255,255,200,${f})`;
+      ctx.beginPath();ctx.arc(x*W,y*H,1.2,0,Math.PI*2);ctx.fill();
+    });
+    // Mirror (magic well)
+    drawWell(ctx,W*.55,H*.72,t);
+    // Animated FOX walking
+    const fx=W*.2+((t*30)%(W*.7));
+    drawFox(ctx,fx,H*.74,t);
+    // Owl
+    drawOwl(ctx,W*.15,H*.52,t);
+  },
+
+  // Scene: Dragon with bubbles
+  dragon_bubbles: (ctx,W,H,t)=>{
+    // Warm mountain sky
+    const g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#0d1b3e');g.addColorStop(.5,'#1a0a3e');g.addColorStop(1,'#2a1a4e');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    // Mountains
+    drawMountain(ctx,0,H*.7,W*.35,H*.3,'#1a2a4e');
+    drawMountain(ctx,W*.3,H*.65,W*.4,H*.35,'#142040');
+    drawMountain(ctx,W*.6,H*.72,W*.4,H*.28,'#1a2a4e');
+    // Moon
+    ctx.fillStyle='#ffd166';ctx.beginPath();ctx.arc(W*.85,H*.18,22,0,Math.PI*2);ctx.fill();
+    // DRAGON
+    drawDragon(ctx,W*.3,H*.6,t);
+    // Bubbles rising
+    for(let i=0;i<6;i++){
+      const bx=W*.35+i*25+Math.sin(t+i)*8;
+      const by=H*.55-((t*40+i*40)%H*.7);
+      const br=6+i*2;
+      ctx.strokeStyle=`hsla(${180+i*30},80%,70%,.7)`;ctx.lineWidth=2;
+      ctx.beginPath();ctx.arc(bx,by,br,0,Math.PI*2);ctx.stroke();
+      // shine on bubble
+      ctx.fillStyle='rgba(255,255,255,.3)';ctx.beginPath();ctx.arc(bx-br*.3,by-br*.3,br*.3,0,Math.PI*2);ctx.fill();
+    }
+    // Village
+    drawVillage(ctx,W*.6,H*.7);
+    // Fire (right side, being extinguished)
+    if(Math.sin(t)>0){
+      drawFire(ctx,W*.72,H*.65,t);
+    }
+  },
+
+  // Scene: Ocean with dolphin
+  ocean_dolphin:(ctx,W,H,t)=>{
+    // Sky
+    const gs=ctx.createLinearGradient(0,0,0,H*.45);
+    gs.addColorStop(0,'#050f2e');gs.addColorStop(1,'#0a2060');
+    ctx.fillStyle=gs;ctx.fillRect(0,0,W,H*.45);
+    // Ocean waves
+    const go=ctx.createLinearGradient(0,H*.4,0,H);
+    go.addColorStop(0,'#0a3a7a');go.addColorStop(.4,'#054a8a');go.addColorStop(1,'#023060');
+    ctx.fillStyle=go;ctx.fillRect(0,H*.4,W,H*.6);
+    // Wave lines
+    for(let w=0;w<3;w++){
+      ctx.strokeStyle=`rgba(100,200,255,${.15+w*.08})`;ctx.lineWidth=2;
+      ctx.beginPath();
+      for(let x=0;x<=W;x+=4){
+        const y=H*(.42+w*.05)+Math.sin(x*.03+t*2+w)*8;
+        x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+      }ctx.stroke();
+    }
+    // Moon & stars
+    ctx.fillStyle='#ffd166';ctx.beginPath();ctx.arc(W*.2,H*.18,20,0,Math.PI*2);ctx.fill();
+    [[.5,.1],[.7,.06],[.85,.15],[.4,.22]].forEach(([x,y],i)=>{
+      const f=.4+.6*Math.sin(t*2+i);ctx.fillStyle=`rgba(255,255,200,${f})`;
+      ctx.beginPath();ctx.arc(x*W,y*H,1.5,0,Math.PI*2);ctx.fill();
+    });
+    // Dolphin jumping arc
+    const dp=((t*.4)%1);
+    const dx=W*.1+dp*(W*.8);
+    const dy=H*.45-Math.sin(dp*Math.PI)*H*.35;
+    drawDolphin(ctx,dx,dy,t,dp);
+    // Treasure chest hint at bottom
+    drawChest(ctx,W*.5,H*.88,t);
+    // Fish
+    [[.25,.65],[.6,.7],[.8,.62]].forEach(([x,y],i)=>drawFish(ctx,x*W,y*H,t+i));
+  },
+
+  // Scene: Enchanted forest flowers
+  flower_girl:(ctx,W,H,t)=>{
+    // Night sky
+    const g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#050a1a');g.addColorStop(1,'#0a1530');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    // Ground
+    ctx.fillStyle='#0d2e14';ctx.fillRect(0,H*.7,W,H*.3);
+    // Many flowers
+    const flowerColors=['#ff6b9d','#ffd166','#06d6a0','#a855f7','#3b82f6'];
+    for(let i=0;i<12;i++){
+      const fx=(i/12)*W+20;const fy=H*.72;
+      const sway=Math.sin(t*1.5+i*.8)*4;
+      drawFlower(ctx,fx,fy+sway,flowerColors[i%flowerColors.length],t+i*.3);
+    }
+    // Girl watering
+    drawGirlWatering(ctx,W*.5,H*.66,t);
+    // Magical sparkles from flowers
+    for(let i=0;i<8;i++){
+      const sx=((i/8)*W)+Math.sin(t+i)*15;
+      const sy=H*.65-((t*20+i*25)%(H*.5));
+      const alpha=1-((t*20+i*25)%(H*.5))/(H*.5);
+      ctx.fillStyle=`rgba(255,${150+i*10},100,${alpha})`;
+      ctx.font='14px serif';ctx.fillText('✦',sx,sy);
+    }
+    // Moon + stars
+    ctx.fillStyle='rgba(255,220,100,.9)';ctx.beginPath();ctx.arc(W*.85,H*.15,22,0,Math.PI*2);ctx.fill();
+    [[.1,.1],[.2,.05],[.4,.08],[.6,.12]].forEach(([x,y],i)=>{
+      const f=.5+.5*Math.sin(t*2.5+i);ctx.fillStyle=`rgba(255,255,200,${f})`;
+      ctx.beginPath();ctx.arc(x*W,y*H,1.5,0,Math.PI*2);ctx.fill();
+    });
+  },
+
+  // Scene: Rainbow end adventure
+  rainbow_adventure:(ctx,W,H,t)=>{
+    // Dawn sky
+    const g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#1a0a2e');g.addColorStop(.4,'#2d1060');g.addColorStop(.7,'#4a1a80');g.addColorStop(1,'#1a3a1a');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    // Rainbow arc
+    const colors=['#ff0000','#ff8800','#ffff00','#00cc00','#0066ff','#8800ff'];
+    colors.forEach((c,i)=>{
+      ctx.strokeStyle=c+`99`;ctx.lineWidth=8;
+      ctx.beginPath();ctx.arc(W*.5,H*.9,H*(.4+i*.06),Math.PI,0);ctx.stroke();
+    });
+    // Mountains silhouette
+    drawMountain(ctx,0,H*.75,W*.3,H*.25,'rgba(0,0,0,.5)');
+    drawMountain(ctx,W*.2,H*.7,W*.35,H*.3,'rgba(0,0,0,.4)');
+    drawMountain(ctx,W*.55,H*.72,W*.5,H*.28,'rgba(0,0,0,.5)');
+    // Two kids walking
+    const kx=W*.15+(t*15)%(W*.55);
+    drawChild(ctx,kx,H*.78,t,'#ff6b9d');
+    drawChild(ctx,kx+20,H*.78,t+.5,'#ffd166');
+    // Sparkling source at rainbow end
+    const spark=t*3;
+    for(let i=0;i<5;i++){
+      const ang=(spark+i*(Math.PI*2/5))%(Math.PI*2);
+      const sx=W*.5+Math.cos(ang)*20;const sy=H*.88+Math.sin(ang)*12;
+      ctx.fillStyle=colors[i%colors.length];ctx.font='12px serif';ctx.fillText('✦',sx,sy);
+    }
+    // Sun rising
+    const sunY=H*.1+Math.sin(t*.3)*5;
+    const sg=ctx.createRadialGradient(W*.5,sunY,0,W*.5,sunY,40);
+    sg.addColorStop(0,'rgba(255,220,80,.9)');sg.addColorStop(1,'transparent');
+    ctx.fillStyle=sg;ctx.beginPath();ctx.arc(W*.5,sunY,40,0,Math.PI*2);ctx.fill();
+  },
+
+  // Scene: Princess tower
+  princess_tower:(ctx,W,H,t)=>{
+    const g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#05091a');g.addColorStop(1,'#150a30');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    // Stars
+    for(let i=0;i<12;i++){
+      const f=.3+.7*Math.sin(t*2+i);ctx.fillStyle=`rgba(255,255,200,${f})`;
+      ctx.beginPath();ctx.arc((i/12)*W+Math.sin(i)*20,30+i*5,1.2,0,Math.PI*2);ctx.fill();
+    }
+    // Moon
+    ctx.fillStyle='#ffd166';ctx.beginPath();ctx.arc(W*.15,H*.2,28,0,Math.PI*2);ctx.fill();
+    // Tower
+    drawTower(ctx,W*.55,H*.8,t);
+    // Floating star gift
+    const starX=W*.25+Math.sin(t*1.2)*15;const starY=H*.4+Math.cos(t*.8)*15;
+    const sg=ctx.createRadialGradient(starX,starY,0,starX,starY,30);
+    sg.addColorStop(0,'rgba(255,209,102,.7)');sg.addColorStop(1,'transparent');
+    ctx.fillStyle=sg;ctx.beginPath();ctx.arc(starX,starY,30,0,Math.PI*2);ctx.fill();
+    drawStar(ctx,starX,starY,5,18,8,'#ffd166','#ff9f1c');
+    // Animals waiting
+    drawBunny(ctx,W*.1,H*.82,t);
+    drawKitten(ctx,W*.22,H*.83,t);
+  },
+
+  // Scene: Lion dancing
+  lion_dance:(ctx,W,H,t)=>{
+    // Savannah night
+    const g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#080a1a');g.addColorStop(.6,'#1a1500');g.addColorStop(1,'#0d1a00');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    // Ground
+    ctx.fillStyle='#1a2a00';ctx.fillRect(0,H*.72,W,H*.28);
+    // Grass
+    for(let i=0;i<20;i++){
+      const gx=i*(W/20)+Math.sin(i)*5;
+      const sway=Math.sin(t*2+i*.5)*4;
+      ctx.strokeStyle='#2a4a00';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(gx,H*.72);
+      ctx.quadraticCurveTo(gx+sway,H*.65,gx+sway*2,H*.58);ctx.stroke();
+    }
+    // Big moon
+    ctx.fillStyle='#ffd166';ctx.beginPath();ctx.arc(W*.5,H*.22,35,0,Math.PI*2);ctx.fill();
+    // Stars
+    for(let i=0;i<8;i++){
+      const f=.4+.6*Math.sin(t*3+i);ctx.fillStyle=`rgba(255,255,200,${f})`;
+      ctx.beginPath();ctx.arc((i/8)*W,H*(.08+i*.02),1.5,0,Math.PI*2);ctx.fill();
+    }
+    // Lion dancing
+    drawLion(ctx,W*.45,H*.68,t);
+    // Zebra, elephant, giraffe watching
+    drawZebra(ctx,W*.08,H*.74,t);
+    drawElephant(ctx,W*.75,H*.72,t);
+    // Music notes floating
+    ['♪','♫','♬'].forEach((n,i)=>{
+      const nx=W*.3+i*60;const ny=H*.3-((t*25+i*40)%(H*.4));
+      const alpha=1-(((t*25+i*40)%(H*.4))/(H*.4));
+      ctx.fillStyle=`rgba(255,209,102,${alpha})`;ctx.font='20px serif';ctx.fillText(n,nx,ny);
+    });
+  },
+
+  // Scene: Wizard spells
+  wizard:(ctx,W,H,t)=>{
+    const g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#060a20');g.addColorStop(1,'#100828');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    // Bookshelf
+    drawBookshelf(ctx,0,H*.3,W*.22,H*.7,t);
+    // Magic table
+    ctx.fillStyle='#2a1a0a';ctx.fillRect(W*.25,H*.65,W*.6,H*.08);ctx.fillRect(W*.3,H*.73,W*.06,H*.15);ctx.fillRect(W*.75,H*.73,W*.06,H*.15);
+    // Cauldron
+    drawCauldron(ctx,W*.5,H*.63,t);
+    // Old wizard
+    drawWizard(ctx,W*.3,H*.6,t);
+    // Little girl helper
+    drawSmallGirl(ctx,W*.65,H*.65,t);
+    // Dog sniffing
+    drawDog(ctx,W*.15,H*.75,t);
+    // Magic particles from cauldron
+    for(let i=0;i<10;i++){
+      const angle=t*2+i*(Math.PI*2/10);
+      const r=25+Math.sin(t+i)*10;
+      const px=W*.5+Math.cos(angle)*r;const py=H*.58+Math.sin(angle)*r*.4;
+      ctx.fillStyle=`hsl(${280+i*20},80%,70%)`;ctx.beginPath();ctx.arc(px,py,2.5,0,Math.PI*2);ctx.fill();
+    }
+    // Flying books
+    const bx=W*.8+Math.sin(t*1.5)*40;const by=H*.35+Math.cos(t)*20;
+    ctx.fillStyle='#8b4513';ctx.fillRect(bx,by,30,22);ctx.fillStyle='#f4a460';ctx.fillRect(bx+3,by+2,24,18);
+    // Stars
+    for(let i=0;i<6;i++){
+      const f=.3+.7*Math.sin(t*2+i);ctx.fillStyle=`rgba(255,255,200,${f})`;
+      ctx.beginPath();ctx.arc(i*(W/6)+20,20+i*8,1.2,0,Math.PI*2);ctx.fill();
+    }
+  },
+
+  // Scene: Fairy wings
+  fairy_wings:(ctx,W,H,t)=>{
+    const g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#05091a');g.addColorStop(.5,'#0a0a28');g.addColorStop(1,'#051a0a');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    // Forest floor
+    ctx.fillStyle='#051a08';ctx.fillRect(0,H*.78,W,H*.22);
+    // Flowers everywhere
+    const fc=['#ff6b9d','#ffd166','#06d6a0','#a855f7'];
+    for(let i=0;i<15;i++){
+      const sway=Math.sin(t*1.2+i*.6)*3;
+      drawFlower(ctx,(i/15)*W+15,H*.79+sway,fc[i%4],t+i*.2);
+    }
+    // Main fairy (no wings)
+    drawFairyNoWings(ctx,W*.5,H*.55,t);
+    // Other fairies flying
+    [[.15,.35],[.75,.3],[.85,.5]].forEach(([x,y],i)=>drawFairyFly(ctx,x*W,y*H,t+i*1.5));
+    // Magic sparkles around center
+    for(let i=0;i<12;i++){
+      const ang=t*1.5+i*(Math.PI*2/12);
+      const r=50+Math.sin(t*2+i)*15;
+      const sx=W*.5+Math.cos(ang)*r;const sy=H*.55+Math.sin(ang)*r*.5;
+      ctx.fillStyle=`hsl(${300+i*15},90%,75%)`;ctx.font='10px serif';ctx.fillText('✦',sx,sy);
+    }
+    // Big moon
+    ctx.fillStyle='rgba(255,220,100,.85)';ctx.beginPath();ctx.arc(W*.82,H*.15,24,0,Math.PI*2);ctx.fill();
+    // Stars
+    for(let i=0;i<10;i++){
+      const f=.3+.7*Math.sin(t*2.5+i);ctx.fillStyle=`rgba(255,255,200,${f})`;
+      ctx.beginPath();ctx.arc((i/10)*W,15+i*3,1.2,0,Math.PI*2);ctx.fill();
+    }
+  },
+
+  // Scene: Three little pigs
+  three_pigs:(ctx,W,H,t)=>{
+    const g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#050a1a');g.addColorStop(1,'#0d1a0a');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#0d2010';ctx.fillRect(0,H*.75,W,H*.25);
+    // Three houses
+    drawStrawHouse(ctx,W*.08,H*.72,t);
+    drawWoodHouse(ctx,W*.35,H*.7,t);
+    drawBrickHouse(ctx,W*.65,H*.68,t);
+    // Wolf
+    drawWolf(ctx,W*.2+Math.sin(t*.8)*10,H*.73,t);
+    // Moon
+    ctx.fillStyle='#ffd166';ctx.beginPath();ctx.arc(W*.5,H*.15,22,0,Math.PI*2);ctx.fill();
+    // Stars
+    for(let i=0;i<8;i++){
+      const f=.4+.6*Math.sin(t*2+i);ctx.fillStyle=`rgba(255,255,200,${f})`;
+      ctx.beginPath();ctx.arc(i*(W/8)+15,20+i*4,1.2,0,Math.PI*2);ctx.fill();
+    }
+    // Blow puff from wolf
+    if(Math.sin(t*2)>0){
+      const wx=W*.25,wy=H*.65;
+      for(let i=0;i<3;i++){
+        const r=15+i*12;const alpha=.3-i*.08;
+        ctx.strokeStyle=`rgba(200,220,255,${alpha})`;ctx.lineWidth=3;
+        ctx.beginPath();ctx.arc(wx+r,wy,r,-.4,Math.PI*.6);ctx.stroke();
+      }
+    }
+  },
+
+  // Scene: Elephant water
+  elephant_water:(ctx,W,H,t)=>{
+    const g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#050a1a');g.addColorStop(.5,'#051a2e');g.addColorStop(1,'#051a14');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    // River
+    const rg=ctx.createLinearGradient(0,H*.65,0,H*.85);
+    rg.addColorStop(0,'#0a3a6e');rg.addColorStop(1,'#051a3e');
+    ctx.fillStyle=rg;ctx.fillRect(0,H*.65,W,H*.2);
+    // Water shimmer
+    for(let x=0;x<W;x+=25){
+      const wy=H*.68+Math.sin(x*.05+t*2)*3;
+      ctx.strokeStyle='rgba(100,180,255,.25)';ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(x,wy);ctx.lineTo(x+15,wy);ctx.stroke();
+    }
+    // Ground
+    ctx.fillStyle='#1a2a0a';ctx.fillRect(0,H*.85,W,H*.15);
+    // Trees
+    drawTree(ctx,W*.05,H*.82,25);drawTree(ctx,W*.88,H*.8,28);
+    // Elephant
+    drawElephantFull(ctx,W*.4,H*.72,t);
+    // Other animals watching
+    drawLionSmall(ctx,W*.1,H*.82,t);
+    drawZebraSmall(ctx,W*.7,H*.83,t);
+    // Moon
+    ctx.fillStyle='#ffd166';ctx.beginPath();ctx.arc(W*.8,H*.18,22,0,Math.PI*2);ctx.fill();
+    // Stars
+    for(let i=0;i<8;i++){
+      const f=.4+.6*Math.sin(t*2+i);ctx.fillStyle=`rgba(255,255,200,${f})`;
+      ctx.beginPath();ctx.arc(i*(W/8)+10,20+i*5,1.2,0,Math.PI*2);ctx.fill();
+    }
+  },
+};
+
+// ═══════════════════════════════════════════════
+//  DRAWING HELPERS
+// ═══════════════════════════════════════════════
+function drawStar(ctx,cx,cy,pts,ro,ri,fill,stroke){
+  ctx.beginPath();
+  for(let i=0;i<pts*2;i++){
+    const r=i%2===0?ro:ri;const a=i*Math.PI/pts-Math.PI/2;
+    i===0?ctx.moveTo(cx+r*Math.cos(a),cy+r*Math.sin(a)):ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
+  }
+  ctx.closePath();ctx.fillStyle=fill;ctx.fill();
+  if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke();}
+}
+function drawHill(ctx,W,H){
+  ctx.fillStyle='#0d2a10';ctx.beginPath();
+  ctx.moveTo(0,H);ctx.quadraticCurveTo(W*.3,H*.55,W*.6,H*.65);ctx.lineTo(W*.6,H);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#0a2010';ctx.beginPath();
+  ctx.moveTo(W*.4,H);ctx.quadraticCurveTo(W*.65,H*.5,W,H*.6);ctx.lineTo(W,H);ctx.closePath();ctx.fill();
+}
+function drawGirl(ctx,x,y,t){
+  // Body
+  ctx.fillStyle='#ff9f9f';ctx.beginPath();ctx.arc(x,y-28,10,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#ffd166';ctx.fillRect(x-6,y-18,12,18);
+  // Arms raised toward star
+  ctx.strokeStyle='#ff9f9f';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(x-6,y-12);ctx.lineTo(x-16,y-22+Math.sin(t)*3);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+6,y-12);ctx.lineTo(x+16,y-22+Math.sin(t+1)*3);ctx.stroke();
+  // Skirt
+  ctx.fillStyle='#ff6b9d';ctx.beginPath();ctx.moveTo(x-6,y);ctx.lineTo(x-12,y+14);ctx.lineTo(x+12,y+14);ctx.lineTo(x+6,y);ctx.closePath();ctx.fill();
+  // Hair
+  ctx.fillStyle='#4a2a00';ctx.beginPath();ctx.arc(x,y-28,10,Math.PI,0);ctx.fill();
+}
+function drawGirlWatering(ctx,x,y,t){
+  ctx.fillStyle='#ffb8a0';ctx.beginPath();ctx.arc(x,y-25,10,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#ff6b9d';ctx.fillRect(x-7,y-15,14,20);
+  // Watering can arm
+  const armAngle=Math.PI*.7+Math.sin(t)*.1;
+  ctx.strokeStyle='#ffb8a0';ctx.lineWidth=4;
+  ctx.beginPath();ctx.moveTo(x+7,y-8);ctx.lineTo(x+22,y+5);ctx.stroke();
+  // Can
+  ctx.fillStyle='#06d6a0';ctx.fillRect(x+18,y+2,14,10);ctx.fillRect(x+30,y+6,4,3);
+  // Water drops
+  for(let i=0;i<3;i++){
+    const dy=((t*30+i*15)%30);ctx.fillStyle='rgba(100,200,255,.7)';
+    ctx.beginPath();ctx.ellipse(x+34,y+9+dy,2,3,0,0,Math.PI*2);ctx.fill();
+  }
+  // Hair
+  ctx.fillStyle='#3a2000';ctx.beginPath();ctx.arc(x,y-25,10,Math.PI*.9,Math.PI*2.1);ctx.fill();
+  // Legs
+  ctx.strokeStyle='#ff9090';ctx.lineWidth=5;
+  ctx.beginPath();ctx.moveTo(x-3,y+5);ctx.lineTo(x-5,y+20);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+3,y+5);ctx.lineTo(x+5,y+20);ctx.stroke();
+}
+function drawTree(ctx,x,yBase,r){
+  ctx.fillStyle='#1a3a0a';ctx.beginPath();ctx.moveTo(x,yBase-r*2.5);ctx.lineTo(x-r,yBase);ctx.lineTo(x+r,yBase);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#0d2a08';ctx.beginPath();ctx.moveTo(x,yBase-r*3.2);ctx.lineTo(x-r*.7,yBase-r*.8);ctx.lineTo(x+r*.7,yBase-r*.8);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#4a2a00';ctx.fillRect(x-4,yBase,8,15);
+}
+function drawFox(ctx,x,y,t){
+  // Body
+  ctx.fillStyle='#e05a00';ctx.beginPath();ctx.ellipse(x,y,22,14,0,0,Math.PI*2);ctx.fill();
+  // Head
+  ctx.beginPath();ctx.arc(x+20,y-8,12,0,Math.PI*2);ctx.fill();
+  // Ears
+  ctx.fillStyle='#e05a00';ctx.beginPath();ctx.moveTo(x+14,y-18);ctx.lineTo(x+20,y-26);ctx.lineTo(x+26,y-18);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#ff9060';ctx.beginPath();ctx.moveTo(x+16,y-18);ctx.lineTo(x+20,y-23);ctx.lineTo(x+24,y-18);ctx.closePath();ctx.fill();
+  // Snout
+  ctx.fillStyle='#ffb080';ctx.beginPath();ctx.ellipse(x+28,y-6,5,4,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#222';ctx.beginPath();ctx.arc(x+28,y-7,1.5,0,Math.PI*2);ctx.fill();
+  // Eye
+  ctx.fillStyle='#1a0a00';ctx.beginPath();ctx.arc(x+22,y-10,2.5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x+23,y-11,1,0,Math.PI*2);ctx.fill();
+  // Tail
+  const tailWag=Math.sin(t*4)*15;
+  ctx.fillStyle='#e05a00';ctx.beginPath();ctx.moveTo(x-22,y);ctx.quadraticCurveTo(x-40,y-20+tailWag,x-30,y-30+tailWag);ctx.lineWidth=10;ctx.strokeStyle='#e05a00';ctx.stroke();
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x-30,y-30+tailWag,6,0,Math.PI*2);ctx.fill();
+  // Legs walking
+  const legSwing=Math.sin(t*5)*10;
+  ctx.strokeStyle='#c04000';ctx.lineWidth=5;
+  ctx.beginPath();ctx.moveTo(x-8,y+10);ctx.lineTo(x-8,y+24+legSwing);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+2,y+10);ctx.lineTo(x+2,y+24-legSwing);ctx.stroke();
+}
+function drawWell(ctx,x,y,t){
+  ctx.fillStyle='#3a2a1a';ctx.beginPath();ctx.ellipse(x,y,22,10,0,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#5a4030';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(x,y,22,10,0,0,Math.PI*2);ctx.stroke();
+  ctx.fillStyle='#2a1a0a';ctx.fillRect(x-22,y-20,44,20);
+  ctx.strokeStyle='#5a4030';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x-22,y-20);ctx.lineTo(x-22,y);ctx.moveTo(x+22,y-20);ctx.lineTo(x+22,y);ctx.stroke();
+  // Mirror shine
+  const shine=0.5+0.5*Math.sin(t*2);
+  ctx.fillStyle=`rgba(100,150,255,${shine*.3})`;ctx.beginPath();ctx.ellipse(x,y-2,16,6,0,0,Math.PI*2);ctx.fill();
+}
+function drawOwl(ctx,x,y,t){
+  ctx.fillStyle='#8b6914';ctx.beginPath();ctx.ellipse(x,y,12,16,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#6b4a10';ctx.beginPath();ctx.arc(x,y-12,10,Math.PI,0);ctx.fill();
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x-4,y-14,5,0,Math.PI*2);ctx.arc(x+4,y-14,5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#1a0a00';ctx.beginPath();ctx.arc(x-4,y-14,2.5,0,Math.PI*2);ctx.arc(x+4,y-14,2.5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#e08000';ctx.beginPath();ctx.moveTo(x-3,y-11);ctx.lineTo(x,y-8);ctx.lineTo(x+3,y-11);ctx.closePath();ctx.fill();
+  // Wing flap
+  const flap=Math.sin(t*3)*8;
+  ctx.fillStyle='#6b4a10';ctx.beginPath();ctx.ellipse(x-14,y-4,8,5,flap*.1,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.ellipse(x+14,y-4,8,5,-flap*.1,0,Math.PI*2);ctx.fill();
+}
+function drawMountain(ctx,x,y,w,h,col){
+  ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+w/2,-h+y);ctx.lineTo(x+w,y);ctx.closePath();ctx.fill();
+}
+function drawDragon(ctx,x,y,t){
+  // Body
+  ctx.fillStyle='#2a8a2a';ctx.beginPath();ctx.ellipse(x,y,30,20,0,0,Math.PI*2);ctx.fill();
+  // Head
+  ctx.beginPath();ctx.arc(x+30,y-10,18,0,Math.PI*2);ctx.fill();
+  // Eye
+  ctx.fillStyle='#ffd166';ctx.beginPath();ctx.arc(x+36,y-14,5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#1a0a00';ctx.beginPath();ctx.arc(x+37,y-14,2.5,0,Math.PI*2);ctx.fill();
+  // Spikes on back
+  ctx.fillStyle='#1a6a1a';
+  for(let i=0;i<4;i++){ctx.beginPath();ctx.moveTo(x-20+i*14,y-18);ctx.lineTo(x-15+i*14,y-30);ctx.lineTo(x-10+i*14,y-18);ctx.closePath();ctx.fill();}
+  // Wings flapping
+  const flap=Math.sin(t*3)*20;
+  ctx.fillStyle='rgba(40,160,40,.7)';ctx.beginPath();ctx.moveTo(x,y-18);ctx.quadraticCurveTo(x-20,y-40-flap,x-40,y-25-flap);ctx.quadraticCurveTo(x-20,y-15,x,y-18);ctx.fill();
+  ctx.beginPath();ctx.moveTo(x,y-18);ctx.quadraticCurveTo(x+20,y-40-flap,x+40,y-25-flap);ctx.quadraticCurveTo(x+20,y-15,x,y-18);ctx.fill();
+  // Tail
+  ctx.strokeStyle='#2a8a2a';ctx.lineWidth=8;ctx.beginPath();ctx.moveTo(x-28,y+5);ctx.quadraticCurveTo(x-50,y+20,x-45,y+5);ctx.stroke();
+  // Legs
+  ctx.strokeStyle='#1a7a1a';ctx.lineWidth=6;
+  ctx.beginPath();ctx.moveTo(x-10,y+18);ctx.lineTo(x-12,y+35);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+10,y+18);ctx.lineTo(x+12,y+35);ctx.stroke();
+}
+function drawVillage(ctx,x,y){
+  // Simple houses
+  ctx.fillStyle='#4a2a10';ctx.fillRect(x,y-20,20,20);ctx.fillRect(x+28,y-15,18,15);
+  ctx.fillStyle='#8b0000';ctx.beginPath();ctx.moveTo(x-4,y-20);ctx.lineTo(x+10,y-35);ctx.lineTo(x+24,y-20);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#6b0000';ctx.beginPath();ctx.moveTo(x+24,y-15);ctx.lineTo(x+37,y-28);ctx.lineTo(x+50,y-15);ctx.closePath();ctx.fill();
+  // Windows glow
+  ctx.fillStyle='rgba(255,200,80,.6)';ctx.fillRect(x+6,y-16,6,8);ctx.fillRect(x+32,y-12,5,7);
+}
+function drawFire(ctx,x,y,t){
+  const h=20+Math.sin(t*4)*8;
+  ctx.fillStyle='rgba(255,100,0,.8)';ctx.beginPath();ctx.moveTo(x-12,y);ctx.quadraticCurveTo(x-6,y-h*.6,x,y-h);ctx.quadraticCurveTo(x+6,y-h*.6,x+12,y);ctx.closePath();ctx.fill();
+  ctx.fillStyle='rgba(255,200,0,.7)';ctx.beginPath();ctx.moveTo(x-7,y);ctx.quadraticCurveTo(x,y-h*.5,x+7,y);ctx.closePath();ctx.fill();
+}
+function drawDolphin(ctx,x,y,t,progress){
+  const angle=progress<.5?-Math.PI*.3:Math.PI*.3;
+  ctx.save();ctx.translate(x,y);ctx.rotate(angle+(progress<.5?-1:1)*Math.PI*.15);
+  ctx.fillStyle='#2090b0';ctx.beginPath();ctx.ellipse(0,0,22,10,0,0,Math.PI*2);ctx.fill();
+  // Head
+  ctx.beginPath();ctx.arc(20,0,9,0,Math.PI*2);ctx.fill();
+  // Snout
+  ctx.fillStyle='#40b0d0';ctx.beginPath();ctx.moveTo(26,-3);ctx.lineTo(36,0);ctx.lineTo(26,3);ctx.closePath();ctx.fill();
+  // Eye
+  ctx.fillStyle='#1a0a00';ctx.beginPath();ctx.arc(22,-2,2,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(22.5,-2.5,0.8,0,Math.PI*2);ctx.fill();
+  // Fins
+  ctx.fillStyle='#1a7090';
+  ctx.beginPath();ctx.moveTo(0,-8);ctx.quadraticCurveTo(-5,-20,-12,-15);ctx.quadraticCurveTo(-6,-8,0,-8);ctx.fill();
+  ctx.beginPath();ctx.moveTo(-18,5);ctx.quadraticCurveTo(-25,15,-15,12);ctx.quadraticCurveTo(-12,8,-18,5);ctx.fill();
+  ctx.beginPath();ctx.moveTo(-18,-5);ctx.quadraticCurveTo(-25,-15,-15,-12);ctx.quadraticCurveTo(-12,-7,-18,-5);ctx.fill();
+  // Tail
+  ctx.beginPath();ctx.moveTo(-18,0);ctx.quadraticCurveTo(-30,8,-28,12);ctx.quadraticCurveTo(-22,4,-18,0);ctx.fill();
+  ctx.beginPath();ctx.moveTo(-18,0);ctx.quadraticCurveTo(-30,-8,-28,-12);ctx.quadraticCurveTo(-22,-4,-18,0);ctx.fill();
+  ctx.restore();
+}
+function drawChest(ctx,x,y,t){
+  const glow=.3+.2*Math.sin(t*2);
+  ctx.fillStyle=`rgba(255,180,0,${glow})`;ctx.beginPath();ctx.arc(x,y,20,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#4a2a00';ctx.fillRect(x-14,y-10,28,18);
+  ctx.fillStyle='#6b4000';ctx.fillRect(x-14,y-14,28,8);
+  ctx.fillStyle='#ffd166';ctx.fillRect(x-4,y-3,8,6);ctx.beginPath();ctx.arc(x,y-1,3,0,Math.PI*2);ctx.fill();
+}
+function drawFish(ctx,x,y,t){
+  const bx=Math.sin(t*1.5+x*.01)*5;
+  ctx.fillStyle='#ff8c40';ctx.beginPath();ctx.ellipse(x+bx,y,10,5,0,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.moveTo(x-8+bx,y);ctx.lineTo(x-18+bx,y-6);ctx.lineTo(x-18+bx,y+6);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#1a0a00';ctx.beginPath();ctx.arc(x+8+bx,y-1,1.5,0,Math.PI*2);ctx.fill();
+}
+function drawFlower(ctx,x,y,color,t){
+  // Stem
+  const sway=Math.sin(t)*3;
+  ctx.strokeStyle='#2a6a1a';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+sway,y-18,x+sway*.5,y-30);ctx.stroke();
+  // Petals
+  ctx.fillStyle=color;
+  for(let p=0;p<5;p++){
+    const ang=(p/5)*Math.PI*2+t*.3;
+    ctx.beginPath();ctx.ellipse(x+sway*.5+Math.cos(ang)*8,y-30+Math.sin(ang)*8,5,3,ang,0,Math.PI*2);ctx.fill();
+  }
+  // Center
+  ctx.fillStyle='#ffd166';ctx.beginPath();ctx.arc(x+sway*.5,y-30,4,0,Math.PI*2);ctx.fill();
+}
+function drawFairyNoWings(ctx,x,y,t){
+  // Glow
+  const g=ctx.createRadialGradient(x,y,0,x,y,40);
+  g.addColorStop(0,'rgba(255,180,255,.2)');g.addColorStop(1,'transparent');
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,40,0,Math.PI*2);ctx.fill();
+  // Body
+  ctx.fillStyle='#ff9fb0';ctx.beginPath();ctx.arc(x,y-18,9,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#a855f7';ctx.beginPath();ctx.moveTo(x-7,y-9);ctx.lineTo(x-10,y+12);ctx.lineTo(x+10,y+12);ctx.lineTo(x+7,y-9);ctx.closePath();ctx.fill();
+  // Hair
+  ctx.fillStyle='#ffd166';ctx.beginPath();ctx.arc(x,y-20,10,Math.PI*.8,Math.PI*2.2);ctx.fill();
+  // Arms raised
+  ctx.strokeStyle='#ff9fb0';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(x-7,y-6);ctx.lineTo(x-20,y-18+Math.sin(t)*4);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+7,y-6);ctx.lineTo(x+20,y-18+Math.sin(t+1)*4);ctx.stroke();
+  // Eyes
+  ctx.fillStyle='#3a0a5a';ctx.beginPath();ctx.arc(x-3,y-20,2,0,Math.PI*2);ctx.arc(x+3,y-20,2,0,Math.PI*2);ctx.fill();
+  // Smile
+  ctx.strokeStyle='#3a0a5a';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(x,y-16,4,0.2,Math.PI-.2);ctx.stroke();
+  // No wings (sad)
+  ctx.fillStyle='rgba(255,255,255,.1)';ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.ellipse(x-14,y-10,8,14,-.5,0,Math.PI*2);ctx.stroke();
+  ctx.beginPath();ctx.ellipse(x+14,y-10,8,14,.5,0,Math.PI*2);ctx.stroke();
+}
+function drawFairyFly(ctx,x,y,t){
+  const bob=Math.sin(t*2)*10;
+  y+=bob;
+  // Wings
+  ctx.fillStyle='rgba(180,100,255,.4)';
+  ctx.beginPath();ctx.ellipse(x-12,y-8,14,8,-.4,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.ellipse(x+12,y-8,14,8,.4,0,Math.PI*2);ctx.fill();
+  // Body
+  ctx.fillStyle='#d480f0';ctx.beginPath();ctx.arc(x,y-6,7,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.ellipse(x,y+3,5,8,0,0,Math.PI*2);ctx.fill();
+  // Trail
+  ctx.fillStyle='rgba(220,150,255,.4)';ctx.font='10px serif';ctx.fillText('✦',x-5,y+15);
+}
+function drawChild(ctx,x,y,t,color){
+  // Walking cycle
+  const legSwing=Math.sin(t*4)*12;
+  ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y-26,9,0,Math.PI*2);ctx.fill();
+  ctx.fillRect(x-5,y-17,10,16);
+  ctx.strokeStyle=color;ctx.lineWidth=5;
+  ctx.beginPath();ctx.moveTo(x-2,y-1);ctx.lineTo(x-5,y+legSwing);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+2,y-1);ctx.lineTo(x+5,y-legSwing);ctx.stroke();
+  // Arm swing
+  ctx.beginPath();ctx.moveTo(x-5,y-10);ctx.lineTo(x-14,y-5+legSwing*.3);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+5,y-10);ctx.lineTo(x+14,y-5-legSwing*.3);ctx.stroke();
+}
+function drawTower(ctx,x,y,t){
+  // Tower body
+  ctx.fillStyle='#3a2a60';ctx.fillRect(x-25,y-90,50,90);
+  // Battlements
+  ctx.fillStyle='#2a1a50';
+  for(let i=0;i<4;i++)ctx.fillRect(x-25+i*14,y-100,10,14);
+  // Window (princess)
+  ctx.fillStyle='rgba(255,200,80,.6)';ctx.beginPath();ctx.arc(x,y-55,14,Math.PI,0);ctx.fill();ctx.fillRect(x-14,y-55,28,20);
+  // Princess silhouette in window
+  ctx.fillStyle='#c060a0';ctx.beginPath();ctx.arc(x,y-60,7,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#8a3070';ctx.beginPath();ctx.moveTo(x-8,y-53);ctx.lineTo(x-12,y-40);ctx.lineTo(x+12,y-40);ctx.lineTo(x+8,y-53);ctx.closePath();ctx.fill();
+  // Door
+  ctx.fillStyle='#1a0a00';ctx.fillRect(x-8,y-18,16,18);ctx.beginPath();ctx.arc(x,y-18,8,Math.PI,0);ctx.fill();
+  // Flag waving
+  const flagWave=Math.sin(t*3)*8;
+  ctx.fillStyle='#ff4444';ctx.beginPath();ctx.moveTo(x,y-100);ctx.lineTo(x+20,y-95+flagWave*.3);ctx.lineTo(x,y-88);ctx.closePath();ctx.fill();
+  ctx.strokeStyle='#aaa';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,y-110);ctx.lineTo(x,y-88);ctx.stroke();
+}
+function drawBunny(ctx,x,y,t){
+  ctx.fillStyle='#e8e0f0';
+  ctx.beginPath();ctx.arc(x,y-14,11,0,Math.PI*2);ctx.fill();
+  // Ears
+  ctx.fillRect(x-7,y-28,6,18);ctx.fillRect(x+1,y-28,6,18);
+  ctx.fillStyle='#ffb0c0';ctx.fillRect(x-6,y-27,4,14);ctx.fillRect(x+2,y-27,4,14);
+  // Eyes
+  ctx.fillStyle='#f0a0b0';ctx.beginPath();ctx.arc(x-3,y-15,2,0,Math.PI*2);ctx.arc(x+3,y-15,2,0,Math.PI*2);ctx.fill();
+  // Nose
+  ctx.fillStyle='#f08090';ctx.beginPath();ctx.arc(x,y-12,1.5,0,Math.PI*2);ctx.fill();
+  // Body
+  ctx.fillStyle='#e8e0f0';ctx.beginPath();ctx.ellipse(x,y,10,12,0,0,Math.PI*2);ctx.fill();
+  // Bounce
+  const bounce=Math.abs(Math.sin(t*2))*5;
+  ctx.fillStyle='rgba(255,255,255,.2)';ctx.beginPath();ctx.ellipse(x,y+14-bounce,8,3,0,0,Math.PI*2);ctx.fill();
+}
+function drawKitten(ctx,x,y,t){
+  ctx.fillStyle='#f0a060';
+  // Body
+  ctx.beginPath();ctx.ellipse(x,y,11,9,0,0,Math.PI*2);ctx.fill();
+  // Head
+  ctx.beginPath();ctx.arc(x+13,y-8,10,0,Math.PI*2);ctx.fill();
+  // Ears
+  ctx.beginPath();ctx.moveTo(x+8,y-16);ctx.lineTo(x+12,y-24);ctx.lineTo(x+18,y-16);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#e08040';ctx.beginPath();ctx.moveTo(x+9,y-17);ctx.lineTo(x+12,y-22);ctx.lineTo(x+17,y-17);ctx.closePath();ctx.fill();
+  // Eyes
+  ctx.fillStyle='#1a0a00';ctx.beginPath();ctx.arc(x+11,y-9,2,0,Math.PI*2);ctx.arc(x+16,y-9,2,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#2a8a00';ctx.beginPath();ctx.arc(x+11,y-9,1.2,0,Math.PI*2);ctx.arc(x+16,y-9,1.2,0,Math.PI*2);ctx.fill();
+  // Tail
+  const tailWag=Math.sin(t*4)*15;
+  ctx.strokeStyle='#f0a060';ctx.lineWidth=5;
+  ctx.beginPath();ctx.moveTo(x-10,y);ctx.quadraticCurveTo(x-22,y-20+tailWag,x-18,y-28+tailWag);ctx.stroke();
+  // Whiskers
+  ctx.strokeStyle='#fff';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(x+13,y-7);ctx.lineTo(x+28,y-9);ctx.moveTo(x+13,y-7);ctx.lineTo(x+28,y-6);ctx.moveTo(x+13,y-7);ctx.lineTo(x+28,y-4);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+13,y-7);ctx.lineTo(x-2,y-9);ctx.moveTo(x+13,y-7);ctx.lineTo(x-2,y-6);ctx.stroke();
+}
+function drawLion(ctx,x,y,t){
+  // Mane (dancing)
+  const swing=Math.sin(t*3)*8;
+  ctx.fillStyle='#c86400';ctx.beginPath();ctx.arc(x+swing*.3,y-22,22,0,Math.PI*2);ctx.fill();
+  // Body dancing
+  ctx.fillStyle='#e08020';ctx.beginPath();ctx.ellipse(x,y,26,18,Math.sin(t*2)*.1,0,Math.PI*2);ctx.fill();
+  // Head
+  ctx.fillStyle='#f0a030';ctx.beginPath();ctx.arc(x+swing*.4,y-22,16,0,Math.PI*2);ctx.fill();
+  // Eyes
+  ctx.fillStyle='#2a1a00';ctx.beginPath();ctx.arc(x+swing*.4-4,y-24,3,0,Math.PI*2);ctx.arc(x+swing*.4+4,y-24,3,0,Math.PI*2);ctx.fill();
+  // Nose
+  ctx.fillStyle='#8b3a00';ctx.beginPath();ctx.arc(x+swing*.4,y-20,3,0,Math.PI*2);ctx.fill();
+  // Dance arms/legs
+  const legA=Math.sin(t*4)*25;
+  ctx.strokeStyle='#e08020';ctx.lineWidth=8;
+  ctx.beginPath();ctx.moveTo(x-12,y+8);ctx.lineTo(x-20,y+22+legA);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+12,y+8);ctx.lineTo(x+20,y+22-legA);ctx.stroke();
+  ctx.lineWidth=7;
+  ctx.beginPath();ctx.moveTo(x-14,y-8);ctx.lineTo(x-28,y-20-legA*.5);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+14,y-8);ctx.lineTo(x+28,y-20+legA*.5);ctx.stroke();
+}
+function drawZebra(ctx,x,y,t){
+  // Body
+  ctx.fillStyle='#f0f0f0';ctx.beginPath();ctx.ellipse(x,y,20,12,0,0,Math.PI*2);ctx.fill();
+  // Stripes
+  ctx.fillStyle='#1a1a1a';
+  for(let i=0;i<4;i++){ctx.fillRect(x-16+i*8,y-11,4,22);}
+  ctx.beginPath();ctx.arc(x+18,y-8,10,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#f0f0f0';ctx.beginPath();ctx.arc(x+18,y-8,10,0,Math.PI*2);
+  for(let i=0;i<3;i++)ctx.arc(x+18,y-8,10,0,Math.PI*2);ctx.clip();
+  ctx.fillStyle='#1a1a1a';for(let i=0;i<3;i++)ctx.fillRect(x+14,y-18+i*6,4,4);
+  ctx.restore&&ctx.restore();
+  // Ears
+  ctx.fillStyle='#f0f0f0';ctx.fillRect(x+14,y-20,5,10);
+  // Eyes
+  ctx.fillStyle='#1a1a1a';ctx.beginPath();ctx.arc(x+22,y-10,2,0,Math.PI*2);ctx.fill();
+}
+function drawElephant(ctx,x,y,t){
+  ctx.fillStyle='#8080a0';ctx.beginPath();ctx.ellipse(x,y,28,18,0,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(x+25,y-12,18,0,Math.PI*2);ctx.fill();
+  // Trunk
+  const trunkSwing=Math.sin(t*2)*8;
+  ctx.strokeStyle='#8080a0';ctx.lineWidth=10;
+  ctx.beginPath();ctx.moveTo(x+32,y-8);ctx.quadraticCurveTo(x+45,y+8+trunkSwing,x+40,y+20+trunkSwing);ctx.stroke();
+  // Big ears
+  ctx.fillStyle='#7070a0';ctx.beginPath();ctx.ellipse(x+14,y-10,10,16,-0.3,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#a08080';ctx.beginPath();ctx.ellipse(x+14,y-10,7,12,-0.3,0,Math.PI*2);ctx.fill();
+  // Eye
+  ctx.fillStyle='#1a1a2a';ctx.beginPath();ctx.arc(x+30,y-15,3,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x+31,y-16,1,0,Math.PI*2);ctx.fill();
+}
+function drawBookshelf(ctx,x,y,w,yEnd,t){
+  ctx.fillStyle='#3a2010';ctx.fillRect(x,y,w,yEnd-y);
+  const colors=['#8b0000','#1a4a8b','#1a6a1a','#8b5a00','#5a008b','#8b4a00'];
+  for(let i=0;i<8;i++){
+    const by=y+10+i*30;const bh=22+Math.random()*8;const bw=16;
+    if(by>yEnd-5)break;
+    // Flying book effect
+    const fly=(i===3)?(Math.sin(t*1.5)*30):0;
+    ctx.fillStyle=colors[i%colors.length];ctx.fillRect(x+4,by-fly,bw,bh);
+    ctx.fillStyle='rgba(255,255,255,.15)';ctx.fillRect(x+6,by-fly+3,bw-4,3);
+  }
+}
+function drawCauldron(ctx,x,y,t){
+  ctx.fillStyle='#1a1a2a';ctx.beginPath();ctx.ellipse(x,y,28,20,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#2a2a3a';ctx.fillRect(x-28,y-15,56,25);
+  // Legs
+  ctx.fillStyle='#1a1a1a';ctx.fillRect(x-20,y+10,6,12);ctx.fillRect(x+14,y+10,6,12);
+  // Bubbling potion
+  const bubbleColor=`hsl(${(t*50)%360},80%,50%)`;
+  ctx.fillStyle=bubbleColor;ctx.beginPath();ctx.ellipse(x,y-2,22,10,0,0,Math.PI*2);ctx.fill();
+  // Bubbles on surface
+  for(let i=0;i<3;i++){
+    const bx=x-10+i*10;const by=y-8+Math.sin(t*3+i)*4;
+    ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.arc(bx,by,4,0,Math.PI*2);ctx.stroke();
+  }
+}
+function drawWizard(ctx,x,y,t){
+  // Robe
+  ctx.fillStyle='#2a1a6a';ctx.beginPath();ctx.moveTo(x,y-40);ctx.lineTo(x-18,y+10);ctx.lineTo(x+18,y+10);ctx.closePath();ctx.fill();
+  // Head
+  ctx.fillStyle='#f0c090';ctx.beginPath();ctx.arc(x,y-46,12,0,Math.PI*2);ctx.fill();
+  // Hat
+  ctx.fillStyle='#1a0a4a';ctx.beginPath();ctx.moveTo(x-16,y-56);ctx.lineTo(x,y-86+Math.sin(t)*.5);ctx.lineTo(x+16,y-56);ctx.closePath();ctx.fill();
+  ctx.beginPath();ctx.ellipse(x,y-56,20,6,0,0,Math.PI*2);ctx.fill();
+  // Star on hat
+  ctx.fillStyle='#ffd166';ctx.font='14px serif';ctx.fillText('⭐',x-7,y-68);
+  // Beard
+  ctx.fillStyle='#e0e0f0';ctx.beginPath();ctx.moveTo(x-8,y-42);ctx.quadraticCurveTo(x,y-28,x+8,y-42);ctx.lineTo(x+6,y-32);ctx.quadraticCurveTo(x,y-18,x-6,y-32);ctx.closePath();ctx.fill();
+  // Wand arm
+  const wandSwing=Math.sin(t*2)*15;
+  ctx.strokeStyle='#f0c090';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(x+12,y-34);ctx.lineTo(x+28,y-48+wandSwing);ctx.stroke();
+  ctx.fillStyle='#ffd166';ctx.beginPath();ctx.arc(x+28,y-48+wandSwing,5,0,Math.PI*2);ctx.fill();
+  // Eyes
+  ctx.fillStyle='#1a0a3a';ctx.beginPath();ctx.arc(x-4,y-46,2,0,Math.PI*2);ctx.arc(x+4,y-46,2,0,Math.PI*2);ctx.fill();
+}
+function drawSmallGirl(ctx,x,y,t){
+  ctx.fillStyle='#f0b090';ctx.beginPath();ctx.arc(x,y-28,9,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#ff6b9d';ctx.fillRect(x-6,y-19,12,20);
+  // Pigtails
+  ctx.fillStyle='#6a3010';ctx.beginPath();ctx.arc(x,y-30,10,Math.PI,0);ctx.fill();
+  ctx.fillStyle='#ff6b9d';ctx.beginPath();ctx.arc(x-10,y-30,4,0,Math.PI*2);ctx.arc(x+10,y-30,4,0,Math.PI*2);ctx.fill();
+  // Raised arm with book
+  const armAng=Math.sin(t*1.5)*.2;ctx.save();ctx.translate(x+6,y-12);ctx.rotate(armAng);
+  ctx.strokeStyle='#f0b090';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(12,-15);ctx.stroke();
+  ctx.fillStyle='#8b0000';ctx.fillRect(8,-18,14,12);ctx.restore();
+  // Eyes
+  ctx.fillStyle='#2a1a00';ctx.beginPath();ctx.arc(x-3,y-29,1.8,0,Math.PI*2);ctx.arc(x+3,y-29,1.8,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#2a1a00';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(x,y-25,3,0.2,Math.PI-.2);ctx.stroke();
+  // Legs
+  ctx.strokeStyle='#f0b090';ctx.lineWidth=5;
+  ctx.beginPath();ctx.moveTo(x-3,y+1);ctx.lineTo(x-4,y+16);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+3,y+1);ctx.lineTo(x+4,y+16);ctx.stroke();
+}
+function drawDog(ctx,x,y,t){
+  ctx.fillStyle='#c08040';ctx.beginPath();ctx.ellipse(x,y,18,10,0,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(x+17,y-5,10,0,Math.PI*2);ctx.fill();
+  // Ear
+  ctx.fillStyle='#a06030';ctx.beginPath();ctx.ellipse(x+12,y-12,5,9,-.5,0,Math.PI*2);ctx.fill();
+  // Eye + nose
+  ctx.fillStyle='#1a0a00';ctx.beginPath();ctx.arc(x+21,y-7,2,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(x+24,y-4,2,0,Math.PI*2);ctx.fill();
+  // Tail wag
+  const tw=Math.sin(t*5)*20;
+  ctx.strokeStyle='#c08040';ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(x-17,y-4);ctx.quadraticCurveTo(x-28,y-16+tw,x-24,y-24+tw);ctx.stroke();
+  // Sniffing movement
+  ctx.fillStyle='#c08040';ctx.beginPath();ctx.arc(x+26,y-4,3,0,Math.PI*2);ctx.fill();
+  // Legs
+  ctx.strokeStyle='#a06030';ctx.lineWidth=5;
+  ctx.beginPath();ctx.moveTo(x-6,y+8);ctx.lineTo(x-7,y+20);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+8,y+8);ctx.lineTo(x+9,y+20);ctx.stroke();
+}
+function drawStrawHouse(ctx,x,y,t){
+  ctx.fillStyle='#b8860b';ctx.fillRect(x,y-25,30,25);
+  ctx.fillStyle='#daa520';ctx.beginPath();ctx.moveTo(x-5,y-25);ctx.lineTo(x+15,y-45);ctx.lineTo(x+35,y-25);ctx.closePath();ctx.fill();
+  ctx.fillStyle='rgba(255,200,80,.6)';ctx.fillRect(x+8,y-18,8,12);
+}
+function drawWoodHouse(ctx,x,y,t){
+  ctx.fillStyle='#8b4513';ctx.fillRect(x,y-30,32,30);
+  // Wood planks
+  ctx.strokeStyle='#6b3a0a';ctx.lineWidth=1.5;
+  for(let i=0;i<5;i++){ctx.beginPath();ctx.moveTo(x,y-30+i*8);ctx.lineTo(x+32,y-30+i*8);ctx.stroke();}
+  ctx.fillStyle='#a52a2a';ctx.beginPath();ctx.moveTo(x-4,y-30);ctx.lineTo(x+16,y-52);ctx.lineTo(x+36,y-30);ctx.closePath();ctx.fill();
+  ctx.fillStyle='rgba(255,200,80,.6)';ctx.fillRect(x+8,y-22,10,14);
+}
+function drawBrickHouse(ctx,x,y,t){
+  ctx.fillStyle='#8b3333';ctx.fillRect(x,y-38,38,38);
+  // Bricks
+  for(let row=0;row<6;row++)for(let col=0;col<3;col++){
+    const bx=x+col*13+(row%2)*6;const by=y-38+row*7;
+    ctx.strokeStyle='#5a2020';ctx.lineWidth=1;ctx.strokeRect(bx,by,12,6);
+  }
+  ctx.fillStyle='#6b1a1a';ctx.beginPath();ctx.moveTo(x-4,y-38);ctx.lineTo(x+19,y-62);ctx.lineTo(x+42,y-38);ctx.closePath();ctx.fill();
+  ctx.fillStyle='rgba(255,200,80,.8)';ctx.fillRect(x+10,y-28,12,16);
+  ctx.strokeStyle='#ffd166';ctx.lineWidth=2;ctx.strokeRect(x+10,y-28,12,16);
+}
+function drawWolf(ctx,x,y,t){
+  ctx.fillStyle='#808080';ctx.beginPath();ctx.ellipse(x,y,22,14,0,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(x+20,y-8,13,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#606060';
+  ctx.beginPath();ctx.moveTo(x+14,y-19);ctx.lineTo(x+18,y-30);ctx.lineTo(x+24,y-19);ctx.closePath();ctx.fill();
+  ctx.beginPath();ctx.moveTo(x+20,y-19);ctx.lineTo(x+26,y-30);ctx.lineTo(x+32,y-19);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#ffff00';ctx.beginPath();ctx.arc(x+18,y-10,3.5,0,Math.PI*2);ctx.arc(x+25,y-10,3.5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#2a0a0a';ctx.beginPath();ctx.arc(x+18,y-10,1.5,0,Math.PI*2);ctx.arc(x+25,y-10,1.5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#e0e0e0';ctx.beginPath();ctx.arc(x+30,y-5,4,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#2a1a1a';ctx.beginPath();ctx.arc(x+30,y-5.5,1.5,0,Math.PI*2);ctx.fill();
+  // Blowing animation
+  if(Math.sin(t*2)>0){
+    ctx.fillStyle='rgba(200,220,255,.5)';
+    for(let i=0;i<3;i++){ctx.beginPath();ctx.arc(x+40+i*15,y-6,5+i*3,0,Math.PI*2);ctx.fill();}
+  }
+  const tw=Math.sin(t*4)*15;
+  ctx.strokeStyle='#808080';ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(x-20,y);ctx.quadraticCurveTo(x-35,y-18+tw,x-30,y-28+tw);ctx.stroke();
+}
+function drawElephantFull(ctx,x,y,t){
+  ctx.fillStyle='#8090b0';ctx.beginPath();ctx.ellipse(x,y,35,22,0,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(x+30,y-16,20,0,Math.PI*2);ctx.fill();
+  // Big ears flapping
+  const flap=Math.sin(t*2)*8;
+  ctx.fillStyle='#7080a0';ctx.beginPath();ctx.ellipse(x+18,y-14,14,22,-0.3+flap*.02,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#a09090';ctx.beginPath();ctx.ellipse(x+18,y-14,9,15,-0.3,0,Math.PI*2);ctx.fill();
+  // Trunk into water
+  const trunkDip=Math.sin(t*.8)*10;
+  ctx.strokeStyle='#8090b0';ctx.lineWidth=14;
+  ctx.beginPath();ctx.moveTo(x+40,y-8);ctx.quadraticCurveTo(x+58,y+8+trunkDip,x+52,y+28+trunkDip);ctx.stroke();
+  // Water spray
+  if(Math.sin(t)>0){
+    for(let i=0;i<8;i++){
+      const ang=(-Math.PI*.3+i*.08);const r=20+i*8;
+      const sx=x+52+Math.cos(ang)*r;const sy=y+28+trunkDip+Math.sin(ang)*r;
+      ctx.fillStyle=`rgba(100,180,255,${.7-i*.07})`;ctx.beginPath();ctx.arc(sx,sy,3,0,Math.PI*2);ctx.fill();
+    }
+  }
+  // Legs
+  ctx.fillStyle='#7080a0';ctx.lineWidth=0;
+  ctx.fillRect(x-22,y+18,14,22);ctx.fillRect(x-2,y+18,14,22);ctx.fillRect(x+14,y+18,14,22);
+  // Eye
+  ctx.fillStyle='#1a1a2a';ctx.beginPath();ctx.arc(x+34,y-20,4,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x+35,y-21,1.5,0,Math.PI*2);ctx.fill();
+  // Small tusks
+  ctx.strokeStyle='#fffff0';ctx.lineWidth=4;
+  ctx.beginPath();ctx.moveTo(x+32,y-10);ctx.quadraticCurveTo(x+42,y-8,x+42,y-2);ctx.stroke();
+}
+function drawLionSmall(ctx,x,y,t){
+  ctx.fillStyle='#c86400';ctx.beginPath();ctx.arc(x+12,y-12,13,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#e08020';ctx.beginPath();ctx.ellipse(x,y,18,11,0,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(x+12,y-12,9,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#1a0a00';ctx.beginPath();ctx.arc(x+10,y-14,2,0,Math.PI*2);ctx.arc(x+15,y-14,2,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#8b3a00';ctx.beginPath();ctx.arc(x+12,y-11,2,0,Math.PI*2);ctx.fill();
+}
+function drawZebraSmall(ctx,x,y,t){
+  ctx.fillStyle='#f0f0f0';ctx.beginPath();ctx.ellipse(x,y,15,9,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#1a1a1a';for(let i=0;i<3;i++)ctx.fillRect(x-10+i*7,y-8,3,16);
+  ctx.fillStyle='#f0f0f0';ctx.beginPath();ctx.arc(x+13,y-5,8,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#1a1a1a';for(let i=0;i<2;i++)ctx.fillRect(x+10,y-10+i*5,3,4);
+  ctx.fillStyle='#1a1a1a';ctx.beginPath();ctx.arc(x+17,y-7,1.8,0,Math.PI*2);ctx.fill();
+}
+function drawBubble(ctx,x,y,text,w){
+  ctx.fillStyle='rgba(255,255,255,.9)';
+  const h=28;const r=8;
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();ctx.fill();
+  // Tail
+  ctx.beginPath();ctx.moveTo(x+20,y+h);ctx.lineTo(x+14,y+h+10);ctx.lineTo(x+28,y+h);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#333';ctx.font='bold 13px Baloo 2, cursive';ctx.fillText(text,x+8,y+18);
+}
+
+// ═══════════════════════════════════════════════
+//  STORIES DATA
+// ═══════════════════════════════════════════════
+const STORIES=[
+  // ── ARABIC ──
+  {id:1,lang:'ar',scene:'star_night',cat:'magic',age:'٣–٧ سنوات',emoji:'🌟',
+   title:'الأميرة والنجمة الذهبية',
+   desc:'الأميرة سارة تتمنى كل ليلة على النجوم، وذات ليلة سقطت نجمة ذهبية مباشرة إلى حجرتها…',
+   story:`كانت الأميرة سارة تجلس كل ليلة عند نافذة قصرها العالي، تنظر إلى النجوم المتلألئة وتتمنى أمنية واحدة من قلبها: أن يكون لكل طفل وحيد في المملكة صديق يؤنسه.\n\nوذات ليلة مضيئة من ليالي الشتاء، مرّت نجمة ذهبية عبر السماء كشهاب مضيء... وفجأة انحرفت عن مسارها وسقطت برفق وهدوء على وسادة سارة!\n\nكانت النجمة بحجم تفاحة صغيرة، دافئة كأشعة الشمس، ومضيئة كالشمعة في الليل الحالك. وكأنها تتنفس.\n\nقالت النجمة بصوت رقيق كنغمات الموسيقى: "سقطتُ من السماء يا أميرة لأن قلبكِ طيب ونقي. ما هي أمنيتكِ؟"\n\nفكّرت سارة طويلاً وعميقاً، ثم قالت بثقة: "أتمنى أن يجد كل طفل وحيد في مملكتنا صديقاً حنوناً يؤنسه."\n\nأضاءت النجمة بألف لون من ألوان قوس قزح وصعدت ببطء نحو السماء اللانهائية.\n\nوفي صباح اليوم التالي، وجد كل طفل كان يبكي وحيداً صديقاً ينتظره أمام بابه — أرانب صغيرة، وقطط لطيفة، وجراء مرحة.\n\nومنذ تلك الليلة الجميلة، عرفت سارة أن أجمل سحر في العالم هو الذي يصنعه قلب كريم محبّ.`},
+
+  {id:2,lang:'ar',scene:'fox_forest',cat:'moral',age:'٤–٨ سنوات',emoji:'🦊',
+   title:'الثعلب الذكي وبئر الحكمة',
+   desc:'ظريف الثعلب يجد بئراً سحرية تُريه ما يحتاجه حقاً… ليست الذكاء، بل شيء أثمن منه!',
+   story:`في غابة خضراء كثيفة ومليئة بالأسرار، كان يعيش ثعلب أحمر اللون يُدعى ظريف. كان يعتقد دائماً وبكل يقين أنه أذكى حيوان في الغابة كلها، ولم يكن يفوّت فرصة ليُذكّر الجميع بذلك.\n\nذات صباح بارد، سمع ظريف همسات تتحدث عن بئر سحرية مخفية في قلب الغابة العميقة. قيل إن من يشرب من مائها يصبح أحكم الحكماء وأذكى العقلاء في الدنيا كلها!\n\nمشى ظريف طويلاً حتى وجع قدماه، وتجاوز الأشجار الكثيفة والأحجار الكبيرة، حتى وجد البئر أخيراً. نظر إلى أعماقها بفارغ الصبر... فرأى وجهه يعكسه الماء الصافي.\n\nلكنه رأى شيئاً غريباً أدهشه وأربكه: رأى نفسه يبكي وحيداً في ركن مظلم، لا أحد بجانبه.\n\nقالت له بومة عجوز حكيمة كانت تجلس على حافة البئر بهدوء:\n"هذه البئر لا تمنحك الذكاء يا ظريف. بل تريك ما تحتاجه حقاً في أعماق قلبك."\n\nفكّر ظريف بجدية وهو يمشي عائداً: لماذا كان وحيداً طوال حياته رغم كل ذكائه وفطنته؟\n\nعاد إلى الغابة وبدأ يتصرف بشكل مختلف تماماً. ساعد الأرنب الصغير في إيجاد طريق بيته. شارك القنفذ الجائع طعامه دون تردد. وجلس يستمع بصبر إلى حكايات الغزال المسنّ الطويلة.\n\nوحين عاد إلى البئر في المساء، نظر فيها مرة أخرى... فرأى نفسه يضحك من قلبه محاطاً بأصدقاء كثيرين يحبونه.\n\nعندها أدرك ظريف الحقيقة الكبيرة: أعظم ذكاء في الوجود هو أن تعرف كيف تُحبّ وتُعطي.`},
+
+  {id:3,lang:'ar',scene:'dragon_bubbles',cat:'magic',age:'٤–٧ سنوات',emoji:'🐉',
+   title:'التنين الصغير وفقاعات الصابون',
+   desc:'فريموس التنين لا يستطيع إخراج النار كبقية التنانين، بل يُخرج فقاعات! حتى جاء يوم احتاجت فيه الغابة إلى موهبته الخاصة…',
+   story:`في جبال آزوريا الشاهقة كان يعيش تنين صغير أخضر اللون اسمه فريموس، له أجنحة كبيرة تبدو كبيرة عليه وذيل طويل يتعثر به أحياناً.\n\nمشكلة فريموس الكبيرة؟ كان يخاف من النار! وحين يحاول أن يُخرج ألسنة اللهب كما تفعل التنانين الأخرى، يسعل ويكح ثم يُنتج بدلاً من ذلك مئات الفقاعات الملونة المتلألئة!\n\nكانت التنانين الكبيرة تضحك بصوت مدوٍّ: "تنين يعمل فقاعات صابون! هاهاها! ما هذا؟!"\n\nكان فريموس يذهب وحيداً إلى ضفة البحيرة الهادئة لينفث فقاعاته. كانت السمكات تقفز لتمسكها، والفراشات الملونة تلعب بداخلها وتطير معها. لكن قلب فريموس الصغير كان حزيناً.\n\nوفي ليلة مظلمة من إحدى الليالي، اندلع حريق ضخم مرعب في الغابة المجاورة للقرية! استيقظ السكان خائفين مرتعشين. حاولت التنانين الكبيرة مساعدتهم لكنها كانت تنفث ناراً على نار — وهذا لم يُجدِ نفعاً بالطبع!\n\nنظر فريموس إلى الحريق المشتعل، ثم نظر إلى الناس الخائفين، وأخذ نفساً عميقاً جداً أعمق من أي نفس أخذه من قبل... وأطلق موجة عملاقة هائلة من الفقاعات الكبيرة!\n\nانفجرت الفقاعات آلافاً وآلافاً فوق النيران بصوت يشبه صوت المطر الغزير. وانطفأت النيران واحدة تلو الأخرى!\n\nفي اليوم التالي، قدّم أهل القرية لفريموس ميدالية ذهبية على شكل فقاعة. وطلبت منه التنانين الكبيرة — وقد اعتذرت بخجل — أن يعلمها كيف تصنع الفقاعات!\n\nابتسم فريموس ابتسامة عريضة. لقد كان الوحيد الذي يمتلك قوة خارقة حقيقية!`},
+
+  {id:4,lang:'ar',scene:'ocean_dolphin',cat:'adventure',age:'٥–٩ سنوات',emoji:'🐬',
+   title:'ماريان والكنز المفقود',
+   desc:'دلفين صغير يجد خريطة في قاع البحر. لكن الطريق إلى الكنز مليء بالمفاجآت الجميلة!',
+   story:`في أعماق المحيط الأزرق اللانهائي كان يعيش دلفين شجاع وفضولي اسمه ماريان. في كل يوم كان يغوص عميقاً عميقاً بحثاً عن الاكتشافات الجديدة والمغامرات المثيرة.\n\nفي يوم من الأيام، بينما كان يلعب بالقرب من شعاب المرجان الملونة، وجد شيئاً غريباً: قارورة زجاجية قديمة بداخلها خريطة مطوية بعناية!\n\nعلى الخريطة كان مرسوماً طريق إلى "الكنز العظيم للبحار". انطلق ماريان بحماس شديد.\n\nلكن الخطوة الأولى على الخريطة كانت تقول: "ساعد من ضاع طريقه."\n\nفوجد ماريان سلحفاة صغيرة تبكي لأنها لا تعرف كيف تعود إلى شاطئها. رافقها ماريان بصبر حتى وصلت إلى بيتها بأمان.\n\nالخطوة الثانية قالت: "شارك فرحتك مع الآخرين."\n\nعلّم ماريان مجموعة من السمكات الصغيرة الخائفة كيف تقفز فوق الأمواج وتستمتع بها. ملأت ضحكاتهم المحيط بالبهجة والحيوية.\n\nالخطوة الثالثة قالت: "احمِ ما هو مشترك بين الجميع."\n\nوجد ماريان شبكة بلاستيكية كبيرة متشابكة في الشعاب المرجانية وأسماكاً محاصرة بداخلها. أمضى ساعات طويلة يعمل بجد وصبر حتى حرّر كل سمكة وكل كائن صغير كان محاصراً.\n\nحين وصل أخيراً إلى المكان المحدد على الخريطة، لم يجد صندوق ذهب ولا جواهر براقة. وجد مرآة صافية في قاع البحر.\n\nنظر فيها ماريان فرأى نفسه محاطاً بكل الأصدقاء الذين صنعهم على طول الرحلة المميزة.\n\nابتسم ماريان بقلبه كله. كان قد وجع الكنز الوحيد الحقيقي الذي يستحق البحث عنه في كل بحار الدنيا.`},
+
+  {id:5,lang:'ar',scene:'elephant_water',cat:'moral',age:'٣–٦ سنوات',emoji:'🐘',
+   title:'فيلو والبحيرة السحرية',
+   desc:'فيلو هو الفيل الوحيد الذي يخاف من الماء. لكن شجاعته ستنقذ الغابة بأكملها!',
+   story:`في غابة جميلة مورقة تعيش على ضفاف نهر كبير، كان يعيش فيلو — الفيل الصغير ذو الأذنين الكبيرتين الرفرّافتين.\n\nكانت الفيلة تحب الماء حباً شديداً وتقضي ساعات تسبح وتلعب وتُرشّ بعضها بالماء بخراطيمها الطويلة. لكن فيلو كان يقف دائماً بعيداً عن الماء ينظر إليهم.\n\nكان يخاف من الماء. خوفاً حقيقياً من أعماق قلبه.\n\nسخر منه أصدقاؤه: "فيل يخاف من الماء؟ هذا أمر مضحك جداً! لم نسمع بمثله من قبل!"\n\nكان فيلو يبتعد وحيداً ويحاول أن يُخفي دموعه وراء أذنيه الكبيرتين.\n\nوفي صيف حار جداً ذلك العام، جفّ النهر الصغير الذي كانت تشرب منه جميع حيوانات الغابة. والعطش الشديد أصاب الجميع من الكبير إلى الصغير.\n\nتذكّر فيلو فجأة أنه رأى ذات مرة ينبوعاً كبيراً نقياً يتدفق خلف الصخور الضخمة في الجانب الآخر من الغابة... لكن للوصول إليه كان لا بد من العبور في بركة عميقة.\n\nوقف فيلو أمام البركة وقلبه يدق بسرعة. أغمض عينيه وأخذ نفساً عميقاً. فكّر في أصدقائه العطاشى الصغار والكبار. وخطا خطوة واحدة جريئة... ثم أخرى... ثم أخرى.\n\nالماء كان بارداً منعشاً ولطيفاً جداً! وصل فيلو إلى الينبوع بأمان وكسر الصخور بقوة، فتدفق الماء العذب البارد نحو كل أرجاء الغابة.\n\nهتف الجميع بفرح عارم: "فيلو أنقذنا! فيلو بطل!"\n\nومنذ ذلك اليوم التاريخي الجميل، أصبح فيلو يحب الماء أكثر من أي فيل آخر في الغابة كلها، ولم يعد يخاف منه أبداً.`},
+
+  {id:6,lang:'ar',scene:'princess_tower',cat:'fairy',age:'٤–٨ سنوات',emoji:'🌙',
+   title:'قصر الأحلام المسحور',
+   desc:'في قصر بعيد، تنتظر أميرة صغيرة هدية خاصة من القمر. لكن هذه الهدية ليست ما يتوقعه أحد…',
+   story:`على تل مرتفع في أطراف المملكة الجميلة، يقوم قصر قديم مسحور يُلمع في ضوء القمر كأنه مصنوع من الفضة والأحلام.\n\nفي هذا القصر كانت تسكن الأميرة نور، فتاة صغيرة ذكية وطيبة القلب. كانت تجمع كل ليلة الأطفال الفقراء من القرى المجاورة وتُحكي لهم القصص وتُطعمهم من خيرات قصرها.\n\nذات ليلة مقمرة ساحرة، سمعت نور صوتاً خفياً قادماً من حديقة القصر. خرجت لترى... فوجدت أرنباً أبيض صغيراً يحمل في قدمته الصغيرة كرة من الضوء الذهبي المتلألئ!\n\nقال الأرنب بصوت حلو مثل صوت الجرس الصغير: "القمر يُرسل لكِ هدية يا أميرة نور، لأنك تُسعدين الأطفال كل ليلة بدون أن تطلبي مقابلاً."\n\nمدّت نور يدها الصغيرة فوضع الأرنب كرة الضوء فيها. فجأة، أضاءت الحديقة كلها بألوان السحر الجميل! نمت الأزهار في لحظة، وبزغت الفراشات المضيئة، وغنّت الطيور أحلى ألحانها وسط الليل.\n\nلكن أجمل شيء جرى: أيقظ الضوء جميع الأطفال في القرية المجاورة الذين كانوا يحلمون بالأمل والحبّ، فجاؤوا جرياً نحو القصر ضاحكين فرحين!\n\nقضوا تلك الليلة يلعبون ويرقصون ويستمعون إلى أميرتهم نور تحكي أجمل الحكايات تحت ضوء القمر الساحر.\n\nومنذ ذلك اليوم، صار قصر نور يضيء كل ليلة من تلقاء نفسه، ليُذكّر الجميع أن أجمل كنوز الدنيا هي الأطفال السعيدة وقلوب الناس الطيبة.`},
+
+  // ── FRENCH ──
+  {id:10,lang:'fr',scene:'dragon_bubbles',cat:'magic',age:'4–7 ans',emoji:'🐉',
+   title:'Le Dragon et les Bulles Magiques',
+   desc:'Frimousse crache des bulles au lieu de feu. Les autres dragons se moquent… jusqu\'au jour où ses bulles sauvent le village !',
+   story:`Dans les montagnes d'Azuria vivait Frimousse, un petit dragon vert pomme aux ailes trop grandes.\n\nSon problème ? Il avait peur du feu. Quand il essayait de cracher des flammes, il produisait des centaines de bulles de savon multicolores qui s'envolaient dans les airs.\n\nLes autres dragons riaient à gorge déployée : « Un dragon qui fait des bulles ! Ha ha ha ! Quelle honte ! »\n\nFrimousse allait souffler ses bulles tout seul au bord du lac tranquille. Les poissons sautaient pour les attraper. Les papillons jouaient à l'intérieur. Mais le cœur de Frimousse était triste.\n\nUn soir sombre, un incendie terrible éclata dans la forêt voisine. Les villageois criaient de peur. Les grands dragons essayaient de souffler du feu — ce qui ne servait absolument à rien pour éteindre les flammes !\n\nAlors Frimousse inspira très, très fort — plus fort qu'il ne l'avait jamais fait de toute sa vie — et souffla : une vague gigantesque de bulles, des milliers et des milliers, qui éclatèrent toutes sur le feu avec un magnifique bruit de pluie douce.\n\nLe feu s'éteignit d'un seul coup !\n\nLe lendemain matin, les villageois reconnaissants offrirent à Frimousse une belle médaille en forme de bulle. Et les autres dragons, un peu honteux et roses de confusion, lui demandèrent avec humilité d'apprendre à faire des bulles eux aussi.\n\nFrimousse sourit de toutes ses dents. Il était le seul dragon au monde à posséder un vrai superpouvoir magique !`},
+
+  {id:11,lang:'fr',scene:'princess_tower',cat:'fairy',age:'4–7 ans',emoji:'👸',
+   title:"La Princesse et l'Étoile Filante",
+   desc:"Une étoile filante tombe dans la chambre de la princesse Lilou. Elle cache un vœu extraordinaire…",
+   story:`Au sommet d'une haute tour de cristal vivait la princesse Lilou aux cheveux d'or. Chaque nuit sans exception, elle s'installait près de sa fenêtre pour regarder les étoiles danser dans le ciel et faire un vœu secret dans son cœur.\n\nUne nuit d'hiver particulièrement froide et étoilée, quelque chose d'extraordinaire se produisit. Une étoile filante traversa le ciel comme une flèche dorée... puis changea brusquement de direction et atterrit tout doucement sur l'oreiller de Lilou avec un petit « plouf » lumineux !\n\nL'étoile était de la taille d'une pomme, douce et chaude comme une flamme protégée. Elle brillait d'une lumière dorée apaisante et semblait respirer paisiblement.\n\n— « Bonsoir, princesse, murmura l'étoile de sa voix argentée comme des cloches. Je suis descendue du ciel parce que ton cœur est pur et généreux. Que désires-tu vraiment ? »\n\nLilou réfléchit longuement, sérieusement. Puis elle dit avec assurance : « Je voudrais que chaque enfant seul dans notre royaume ait un ami fidèle qui l'aime. »\n\nL'étoile brilla de mille feux éblouissants et remonta lentement vers le ciel étoilé.\n\nLe lendemain matin, dans tous les jardins et toutes les ruelles du royaume, des petits lapins blancs, des chatons doux et des chiots joueurs attendaient les enfants qui n'avaient personne.\n\nEt Lilou avait reçu le plus beau cadeau de tous : la certitude absolue que la magie existe chaque fois que le cœur est généreux et bon.`},
+
+  {id:12,lang:'fr',scene:'flower_girl',cat:'fairy',age:'3–7 ans',emoji:'🌸',
+   title:'La Fée sans Ailes',
+   desc:"Alba est une fée née sans ailes. Mais elle possède un don unique qui va sauver toute la forêt enchantée…",
+   story:`Dans la forêt enchantée vivaient de nombreuses fées aux ailes magnifiques de toutes les couleurs. Toutes... sauf Alba.\n\nAlba était née sans ailes. Les autres lutins se moquaient parfois d'elle cruellement : « Une fée sans ailes n'est pas une vraie fée ! Tu n'es rien ! »\n\nMais Alba ne se décourageait jamais. Chaque matin avec le même enthousiasme, elle parcourait la forêt à pied, et partout où elle souriait avec son cœur, les fleurs poussaient instantanément. Là où elle posait doucement ses pieds, du mousse vert et moelleux apparaissait. Où elle s'asseyait pour se reposer, des champignons colorés formaient des ronds parfaits.\n\nUn hiver particulièrement cruel et glacial, toutes les fleurs de la forêt moururent de froid. Les fées avec leurs ailes ne pouvaient rien faire : leurs jolies ailes se gelaient dès qu'elles sortaient.\n\nMais Alba, courageuse, traversa toute la forêt enneigée à pied, souriant à chaque racine endormie sous la neige, chuchotant des mots d'encouragement à chaque petite graine enterrée profondément.\n\nAu lever du soleil doré du matin, toute la forêt avait refleurido plus belle que jamais !\n\nLa reine des fées s'approcha d'Alba avec respect et lui dit doucement :\n« Tu n'as pas besoin d'ailes pour voler, Alba. Tu voles d'une autre façon, bien plus belle : dans le cœur de chaque être vivant que tu touches de ta bonté. »\n\nEt depuis ce jour béni, plus personne ne se moqua jamais d'elle.`},
+
+  {id:13,lang:'fr',scene:'rainbow_adventure',cat:'adventure',age:'5–9 ans',emoji:'🌈',
+   title:"L'Arc-en-Ciel Magique",
+   desc:"Tom et Léa décident de trouver l'autre bout de l'arc-en-ciel. Mais le vrai trésor n'est pas celui qu'ils imaginent…",
+   story:`Un matin radieux après une belle pluie d'été, un immense arc-en-ciel aux sept couleurs magnifiques apparut dans le ciel. Ses couleurs vives allaient directement du jardin de Tom jusqu'à la montagne lointaine.\n\n— « On y va trouver le trésor ? » dit Léa en enfilant son sac à dos orange.\n— « On y va ! » répondit Tom avec un grand sourire aventureux.\n\nIls marchèrent d'abord joyeusement à travers le grand pré vert. Là, ils rencontrèrent un vieux berger souriant assis sur une pierre.\n\n— « L'arc-en-ciel ? dit-il en riant doucement. La dernière fois que j'ai essayé de le trouver, j'avais exactement votre âge ! Bonne chance, les enfants ! »\n\nIls traversèrent la rivière fraîche sur des pierres plates glissantes, guidés par un canard bavard. Ils grimpèrent la colline couverte de bruyère violette jusqu'à ce que leurs genoux rougissent d'effort.\n\nAu sommet majestueux, la lumière était si belle et pure que tout semblait irréel, comme dans un rêve. Et là... l'arc-en-ciel touchait le sol dans une petite clairière secrète.\n\nMais il n'y avait aucun coffre d'or. À la place : une source d'eau cristalline qui brillait de sept couleurs, entourée de fleurs qu'on ne voit absolument nulle part ailleurs dans le monde.\n\n— « C'est encore plus beau qu'un trésor ordinaire, » souffla Léa, les yeux grands comme des soucoupes.\n\nIls burent l'eau fraîche et magique, cueillirent chacun une fleur précieuse, et rentrèrent chez eux le cœur débordant de bonheur.\n\nLe soir, leur maman regarda les fleurs extraordinaires et dit avec sagesse : « Vous avez trouvé le vrai trésor de l'arc-en-ciel : une belle journée d'aventure passée ensemble avec amour. »`},
+
+  // ── ENGLISH ──
+  {id:20,lang:'en',scene:'star_night',cat:'magic',age:'3–6 yrs',emoji:'⭐',
+   title:'The Little Star Who Found Her Courage',
+   desc:'Twinkle the star hides behind clouds every night, too scared to shine. The moon has a wonderful secret to share…',
+   story:`Every single night, when the sun went to sleep and the world grew dark, all the stars would wake up and shine brightly. But not little Twinkle. She would hide behind the biggest, fluffiest cloud she could find and peek out with just one eye.\n\n"I'm scared of the dark," she whispered sadly.\n\nThe moon, big and round and golden, floated gently over to her cloud.\n\n"But sweet Twinkle," said the moon with a warm smile, "you ARE the light. Without stars like you, the night sky would be completely dark and empty."\n\nTwinkle peeked carefully out from behind her cloud. Far, far below, she saw a little girl sitting on her windowsill in her pyjamas, staring up at the sky with wide hopeful eyes, waiting and searching.\n\n"She's looking for me," Twinkle breathed, her tiny heart beating fast.\n\nTaking a deep breath, she stepped out bravely from behind the cloud. Instantly, a warm golden light spread across the entire sky like a beautiful painting.\n\nThe little girl below gasped with delight, pointed upward, and called to her mum: "Mummy, I found my special star!"\n\nFrom that night onward, Twinkle was never afraid of the dark again. She had learned the most important lesson: even the very smallest light can chase away the very biggest darkness.`},
+
+  {id:21,lang:'en',scene:'lion_dance',cat:'animals',age:'4–8 yrs',emoji:'🦁',
+   title:'Leo the Lion Who Loved to Dance',
+   desc:"Leo has a secret: he loves to dance! But lions aren't supposed to dance… or are they?",
+   story:`Deep in the heart of the golden savannah lived a magnificent lion named Leo. He had a splendid, flowing mane, a powerful roar that shook the trees, and a very special secret that he kept hidden from everyone.\n\nLeo loved to dance.\n\nEvery evening, when all the other lions were fast asleep and snoring, Leo would creep quietly to the clearing by the silver river. He would close his eyes and listen to the rhythm of the crickets chirping, the gentle splash of the water, the rustling of the tall golden grass in the warm breeze — and then he would dance with his whole heart.\n\nOne moonlit evening, a little zebra named Zara happened to be awake and saw him. Leo froze in absolute embarrassment, his cheeks turning pink under his golden fur.\n\n"Please, please don't tell anyone," he begged quietly.\n\nBut Zara smiled the biggest, warmest smile he had ever seen. "I won't tell. But... could you teach me?"\n\nThe next evening, the giraffe came too. Then the elephants, swaying their big grey bodies. Even the grumpy old hippo tried a few clumsy but enthusiastic steps.\n\nAnd so it came to be that every single evening, all the animals of the savannah gathered by the glittering river to dance together under the stars. And Leo — the lion who started it all — danced proudly in the very centre, his beautiful golden mane flying like a flag in the wind.\n\nBecause sometimes the thing that makes you different is the very same thing that brings everyone joyfully together.`},
+
+  {id:22,lang:'en',scene:'wizard',cat:'adventure',age:'5–9 yrs',emoji:'🧙',
+   title:"The Wizard Who Lost His Spell Book",
+   desc:"When old Cornelius loses his spell book, magic goes hilariously wrong everywhere! Can brave Mia and her dog Biscuit save the day?",
+   story:`Old Cornelius was the kindest, wisest, most beloved wizard in the whole kingdom. He had a magnificent long purple hat, a rather crooked wooden wand, and one very, very important book — his spell book, full of every magical recipe he had ever learned.\n\nUntil one perfectly ordinary Tuesday morning, when he reached for it and it was simply... gone.\n\nWithout his book, things went rather dramatically wrong. He tried to make his morning tea — it turned into a pot of tomato soup. He tried to light a single candle — it turned into a small, very confused and rather grumpy hedgehog.\n\nLittle Mia, who lived in the cosy cottage next door, noticed the worried old wizard looking everywhere and offered to help at once.\n\nMia and her fluffy dog Biscuit searched the garden (where an innocent rosebush was now singing opera rather loudly), the kitchen (where all the chairs were dancing a cheerful jig), and the library upstairs (where every single book was flying around the room like a flock of excited birds).\n\nFinally, with his magnificent nose working overtime, Biscuit sniffed and sniffed and then started digging enthusiastically under the great old oak tree at the bottom of the garden.\n\nA whole family of cheeky squirrels had secretly borrowed the book weeks ago — they had been desperately trying to learn a recipe for magic acorns that could do your homework for you.\n\nCornelius laughed so hard that his tall purple hat fell off his head. He kindly gave the squirrels the acorn recipe as a proper gift.\n\nAnd Mia? She received the most wonderful reward of all: one small, absolutely perfectly working magic spell — chosen just for her.`},
+
+  {id:23,lang:'en',scene:'ocean_dolphin',cat:'adventure',age:'4–8 yrs',emoji:'🌊',
+   title:'Marino and the Ocean Treasure',
+   desc:"A curious dolphin finds a treasure map on the ocean floor. But the real treasure isn't gold at all…",
+   story:`In the vast and beautiful blue ocean lived Marino, the most curious and speedy dolphin in all the seven seas. Every single day he would dive deep and explore new corners of his underwater world, always looking for something new and wonderful.\n\nOne bright morning, while playing near a glittering coral reef, he spotted something strange half-buried in the sand: an old glass bottle with a carefully folded map inside!\n\nThe map showed a winding path to "The Great Ocean Treasure." Marino shot through the water with excitement, his fins churning the blue water white.\n\nBut the very first step on the map read: "Help one who is lost."\n\nMarino found a tiny sea turtle crying softly because she didn't know how to find her way back to her home beach. Patiently, Marino guided her all the way home.\n\nThe second step said: "Share your joy with others."\n\nMarino gathered a group of timid little fish who had never been brave enough to leap over waves, and taught them how to jump and spin and feel the warm sunshine on their scales. Their happy laughter filled the whole ocean with music.\n\nThe third step said: "Take care of what belongs to everyone."\n\nMarino discovered a tangled plastic net wrapped around the coral. He worked and tugged for hours until every trapped creature was free and swimming happily.\n\nWhen he finally reached the spot marked with an X on the map, there was no golden chest, no glittering jewels. Instead, at the bottom of the sea, there was a beautiful mirror.\n\nMarino looked into it and saw himself — surrounded by every single friend he had made along the extraordinary journey.\n\nHe smiled his biggest dolphin smile. He had found the only treasure that truly, deeply matters.`},
+
+  // ── ESPAÑOL ──
+  {id:30,lang:'es',scene:'flower_girl',cat:'fairy',age:'3–7 años',emoji:'🌺',
+   title:'La Niña que Hablaba con las Flores',
+   desc:"Lucía descubre que puede hablar con las flores. Pero una noche de tormenta, las flores la necesitan a ella…",
+   story:`En un pequeño y tranquilo pueblo rodeado de montañas verdes vivía Lucía, una niña de seis años con dos trenzas largas y una regadera roja brillante que era su tesoro más preciado.\n\nCada mañana sin falta, Lucía salía al jardín de su casa para regar con cuidado cada flor. Y un día luminoso de primavera, mientras regaba con ternura una rosa amarilla muy bonita, escuchó de repente una vocecita pequeñísima:\n\n"Gracias, Lucía. Hoy hace muchísimo calor y tenía mucha sed."\n\nLucía miró rápidamente a su alrededor con los ojos bien abiertos. No había absolutamente nadie. Sólo la rosa, moviéndose suavemente con la brisa.\n\n"¿Fuiste tú quien habló?" susurró Lucía casi sin respirar.\n"Sí, fui yo," respondió la rosa con calma. "Sólo los niños y niñas de corazón puro y bondadoso pueden escucharnos."\n\nDesde ese día tan especial, Lucía hablaba con alegría con cada flor de su jardín. Las margaritas le contaban chistes divertidos que la hacían reír. Los girasoles altos y sabios le daban consejos importantes. Y la lavanda le cantaba canciones de cuna tan bonitas que a veces Lucía casi se dormía en el jardín.\n\nUna noche de verano, una tormenta terrible y feroz llegó al pueblo. El viento fuerte y frío amenazaba con arrancar de raíz todas las flores del jardín. Lucía escuchó los gritos asustados de sus flores desde su cama.\n\nSin dudar ni un segundo, se levantó, se puso las botas y salió corriendo bajo la lluvia fría. Cubrió una a una cada flor con su propia manta de cuadros, con mucho cuidado y mucho amor.\n\nCuando amaneció con un sol precioso, el jardín de Lucía estaba completamente intacto y más colorido y florido que nunca jamás.\n\nY entre los pétalos brillantes y frescos de rocío matutino, todas las flores susurraron al unísono con una voz llena de amor:\n"Gracias, querida amiga Lucía. Tú eres nuestra primavera para siempre."`},
+
+  {id:31,lang:'es',scene:'rainbow_adventure',cat:'adventure',age:'5–9 años',emoji:'🌈',
+   title:'El Viaje al Fin del Arcoíris',
+   desc:"Carlos y su hermana pequeña Ana deciden buscar el tesoro al final del arcoíris. ¡Lo que encuentran es mucho mejor que el oro!",
+   story:`Una brillante mañana de domingo después de una lluvia fresca, un arcoíris enorme y perfecto apareció en el cielo azul. Sus siete colores brillantes iban desde el jardín de Carlos hasta una montaña lejana y misteriosa.\n\n— "¿Vamos a buscar el tesoro?" dijo Ana entusiasmada, poniéndose su mochila amarilla favorita.\n— "¡Claro que sí!" respondió Carlos con una gran sonrisa de aventurero.\n\nCaminaron primero a través del gran prado verde lleno de flores silvestres. Allí se encontraron con un viejo pastor sentado tranquilamente bajo un árbol.\n\n— "¿El arcoíris?" dijo él con una sonrisa nostálgica. "La última vez que intenté encontrar su tesoro tenía exactamente vuestra edad. ¡Mucha suerte, pequeños aventureros!"\n\nCruzaron el río fresco saltando de piedra en piedra, con un pato amarillo muy curioso que los acompañó un buen rato. Subieron la colina cubierta de brezo morado hasta que las piernas les pesaban como plomo.\n\nDesde la cima, la vista era tan increíblemente bella que parecía sacada de un cuento de hadas. Y allí estaba... el arcoíris tocando suavemente el suelo en un pequeño claro secreto rodeado de árboles altos.\n\nPero no había ningún cofre de oro reluciente. En su lugar había algo mucho mejor y más maravilloso: un manantial de agua cristalina que brillaba con los siete colores del arcoíris, rodeado de flores únicas que no existen en ningún otro lugar del mundo.\n\n— "Es mucho más bonito que cualquier tesoro de oro," susurró Ana con los ojos brillantes de emoción.\n\nBebieron el agua fría y deliciosa, recogieron cada uno una flor mágica imposible de describir, y volvieron a casa con el corazón lleno de alegría pura.\n\nEsa noche, su mamá miró las flores extraordinarias y dijo sonriendo: "Habéis encontrado el verdadero tesoro del arcoíris: una tarde de aventura compartida con amor."` },
+
+  {id:32,lang:'es',scene:'lion_dance',cat:'animals',age:'4–8 años',emoji:'🦁',
+   title:'Leo el León Bailarín',
+   desc:"El rey de la selva tiene un secreto: ¡le encanta bailar! Cuando todos lo descubren, la selva entera cambia para siempre.",
+   story:`En el corazón dorado de la gran sabana africana vivía un león magnífico llamado Leo. Tenía una melena espléndida y rojiza, un rugido poderoso que hacía temblar las hojas de los árboles, y un secreto muy especial que guardaba con cuidado.\n\nA Leo le encantaba bailar.\n\nCada noche, cuando todos los demás leones dormían profundamente, Leo se escabullía sigiloso hasta el claro junto al río plateado. Cerraba los ojos y escuchaba la música natural de la sabana: el ritmo de los grillos, el suave chapoteo del agua, el susurro del pasto alto en la brisa tibia... y entonces bailaba con toda su alma.\n\nUna noche luminosa de luna llena, una cebrita llamada Zara estaba despierta y lo vio. Leo se quedó petrificado de vergüenza, con las mejillas rojas bajo su pelo dorado.\n\n"Por favor, no se lo digas a nadie," suplicó en voz baja.\n\nPero Zara le dedicó la sonrisa más grande y más cálida que había visto en su vida. "No diré nada. Pero... ¿podrías enseñarme a mí?"\n\nA la noche siguiente vinieron la jirafa y su cuello larguísimo. Luego los elefantes, balanceando sus enormes cuerpos grises con sorprendente elegancia. Incluso el viejo hipopótamo gruñón intentó unos pasos torpes pero llenos de alegría.\n\nY así fue como, cada noche bajo las estrellas brillantes, todos los animales de la sabana se reunían junto al río para bailar juntos. Y Leo — el león que había empezado todo — bailaba orgulloso en el centro del círculo, su melena dorada ondeando como una bandera al viento.\n\nPorque a veces, la cosa que te hace diferente es exactamente la misma que une a todos con alegría.`},
+];
+
+// ═══════════════════════════════════════════════
+//  APP STATE & LOGIC
+// ═══════════════════════════════════════════════
+let activeLang='all', activeCat='all';
+let animHandle=null, animT=0, animPlaying=false;
+let currentStory=null;
+
+function setCat(c,btn){
+  activeCat=c;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');render();
+}
+function setLang(l,btn){
+  activeLang=l;
+  document.querySelectorAll('.lpill').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');render();
+}
+
+function langFlag(l){return{fr:'🇫🇷',en:'🇬🇧',ar:'🇸🇦',es:'🇪🇸'}[l]||'';}
+function catLabel(c){return{magic:'🪄 سحر',animals:'🦊 حيوانات',adventure:'🗺️ مغامرة',fairy:'🧚 جنيات',moral:'💛 عبرة'}[c]||c;}
+function badgeCls(l){return'b-'+l;}
+function catBadgeCls(c){return'b-'+c;}
+
+function render(){
+  const q=document.getElementById('search').value.toLowerCase();
+  const filtered=STORIES.filter(s=>{
+    const ml=activeLang==='all'||s.lang===activeLang;
+    const mc=activeCat==='all'||s.cat===activeCat;
+    const ms=!q||s.title.toLowerCase().includes(q)||s.desc.toLowerCase().includes(q);
+    return ml&&mc&&ms;
+  });
+  const grid=document.getElementById('grid');
+  if(!filtered.length){grid.innerHTML='<div class="empty"><span>🌙</span>لا توجد قصص… No stories found…</div>';return;}
+  grid.innerHTML=filtered.map((s,i)=>`
+    <div class="card" style="animation-delay:${i*.06}s" onclick="openStory(${s.id})">
+      <div class="cartoon" id="thumb_${s.id}"><canvas class="scene" id="c_${s.id}" width="320" height="200"></canvas></div>
+      <div class="card-info">
+        <div class="card-badges">
+          <span class="badge ${catBadgeCls(s.cat)}">${catLabel(s.cat)}</span>
+          <span class="badge ${badgeCls(s.lang)}">${langFlag(s.lang)}</span>
+        </div>
+        <div class="card-title${s.lang==='ar'?' ar':''}">${s.title}</div>
+        <div class="card-desc${s.lang==='ar'?' ar':''}">${s.desc}</div>
+        <div class="card-foot">
+          <span class="card-age">👶 ${s.age}</span>
+          <button class="play-btn">▶ ${s.lang==='ar'?'تشغيل':s.lang==='fr'?'Regarder':s.lang==='es'?'Ver':'Watch'}</button>
+        </div>
+      </div>
+    </div>`).join('');
+  // Boot thumbnail animations
+  filtered.forEach(s=>{
+    const cv=document.getElementById('c_'+s.id);
+    if(!cv)return;
+    const ctx=cv.getContext('2d');
+    let tt=Math.random()*100;
+    const fn=()=>{
+      cv.width=cv.offsetWidth||320;cv.height=cv.offsetHeight||200;
+      const sceneFn=scenes[s.scene]||scenes.star_night;
+      sceneFn(ctx,cv.width,cv.height,tt);
+      tt+=0.03;
+    };
+    fn();
+    const obs=new ResizeObserver(fn);obs.observe(cv);
+    cv._interval=setInterval(fn,50);
+  });
+}
+
+function openStory(id){
+  const s=STORIES.find(x=>x.id===id);if(!s)return;
+  currentStory=s;
+  stopAnim();
+  // Badges
+  document.getElementById('modalBadges').innerHTML=`
+    <span class="badge ${catBadgeCls(s.cat)}">${catLabel(s.cat)}</span>
+    <span class="badge ${badgeCls(s.lang)}">${langFlag(s.lang)}</span>
+    <span class="badge" style="background:rgba(255,255,255,.08);color:var(--muted)">👶 ${s.age}</span>`;
+  // Title
+  const t=document.getElementById('modalTitle');
+  t.textContent=s.title;t.className='modal-title'+(s.lang==='ar'?' ar':'');
+  // Story text
+  const st=document.getElementById('modalStory');
+  st.innerHTML=s.story.split('\n\n').map(p=>`<p>${p.replace(/\n/g,'<br>')}</p>`).join('');
+  st.className='modal-story'+(s.lang==='ar'?' ar':'');
+  // Canvas
+  const cv=document.getElementById('modalCanvas');
+  cv.width=cv.offsetWidth||760;cv.height=cv.offsetHeight||280;
+  const ctx=cv.getContext('2d');
+  const sceneFn=scenes[s.scene]||scenes.star_night;
+  animT=0;animPlaying=false;
+  sceneFn(ctx,cv.width,cv.height,animT);
+  document.getElementById('playPauseBtn').textContent='▶ تشغيل / Play';
+  document.getElementById('progressBar').style.width='0%';
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function togglePlay(){
+  if(animPlaying){stopAnim();}else{startAnim();}
+}
+function startAnim(){
+  if(!currentStory)return;
+  animPlaying=true;
+  document.getElementById('playPauseBtn').textContent='⏸ إيقاف / Pause';
+  const cv=document.getElementById('modalCanvas');
+  const ctx=cv.getContext('2d');
+  const sceneFn=scenes[currentStory.scene]||scenes.star_night;
+  const totalDur=600;
+  const loop=()=>{
+    cv.width=cv.offsetWidth||760;cv.height=cv.offsetHeight||280;
+    sceneFn(ctx,cv.width,cv.height,animT);
+    animT+=0.04;
+    const pct=Math.min((animT/totalDur)*100,100);
+    document.getElementById('progressBar').style.width=pct+'%';
+    if(animT<totalDur){animHandle=requestAnimationFrame(loop);}
+    else{stopAnim();document.getElementById('playPauseBtn').textContent='🔄 إعادة / Replay';}
+  };
+  animHandle=requestAnimationFrame(loop);
+}
+function stopAnim(){
+  animPlaying=false;
+  if(animHandle){cancelAnimationFrame(animHandle);animHandle=null;}
+  const btn=document.getElementById('playPauseBtn');
+  if(btn&&!btn.textContent.includes('Replay'))btn.textContent='▶ تشغيل / Play';
+}
+function closeModal(){
+  stopAnim();
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+function maybeClose(e){if(e.target===document.getElementById('overlay'))closeModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+// Boot
+render();
+</script>
+</body>
+</html>
